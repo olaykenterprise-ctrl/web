@@ -45,8 +45,15 @@ export function Footer() {
           
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1 pr-4">
-            <Link href="/" className="flex items-center mb-4">
-              <img src="/logo.png" alt="OYK Logo" className="h-10 w-auto brightness-0 invert opacity-90" />
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <div className="relative w-10 h-10 flex-shrink-0">
+                <Image
+                  src="/logo.svg"
+                  alt="OlaYKEnterprise Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </Link>
             <p className="text-xs text-gray-400 mb-6 leading-relaxed">
               Your trusted store for powerbanks, phone accessories and content creation tools at the best prices.

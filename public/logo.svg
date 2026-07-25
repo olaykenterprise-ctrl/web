@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFC107" />
+      <stop offset="100%" stop-color="#D48806" />
+    </linearGradient>
+    <linearGradient id="navyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002A5C" />
+      <stop offset="100%" stop-color="#00152E" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Swashes -->
+  <!-- Top Right Gold Arc -->
+  <path d="M 120 120 A 180 180 0 0 1 430 250 L 400 250 A 150 150 0 0 0 150 140 Z" fill="url(#goldGrad)" />
+  <!-- Bottom Left Navy Arc into Shopping Cart -->
+  <path d="M 380 380 A 180 180 0 0 1 70 250 L 100 250 A 150 150 0 0 0 350 360 Z" fill="url(#navyGrad)" />
+  
+  <!-- The O Y K Text -->
+  <g font-family="Arial, sans-serif" font-weight="900" font-size="160" letter-spacing="-10">
+    <!-- O -->
+    <text x="120" y="280" fill="url(#navyGrad)">O</text>
+    <!-- K -->
+    <text x="290" y="280" fill="url(#navyGrad)">K</text>
+    <!-- Y (overlapping in center) -->
+    <text x="200" y="280" fill="url(#goldGrad)">Y</text>
+  </g>
+
+  <!-- Shopping Cart Base & Wheels -->
+  <!-- Cart body -->
+  <path d="M 150 280 L 190 360 L 330 360 L 380 270 L 350 270 L 310 330 L 210 330 L 180 280 Z" fill="url(#navyGrad)" />
+  <!-- Cart Lines -->
+  <rect x="150" y="300" width="40" height="8" rx="4" fill="url(#navyGrad)" />
+  <rect x="160" y="320" width="30" height="8" rx="4" fill="url(#navyGrad)" />
+  
+  <!-- Wheels -->
+  <circle cx="230" cy="380" r="15" fill="url(#navyGrad)" />
+  <circle cx="230" cy="380" r="6" fill="#fff" />
+  <circle cx="310" cy="380" r="15" fill="url(#navyGrad)" />
+  <circle cx="310" cy="380" r="6" fill="#fff" />
+
+  <!-- 3D Box inside Cart -->
+  <g transform="translate(230, 260)">
+    <!-- Top face -->
+    <polygon points="40,0 80,15 40,30 0,15" fill="#FFD54F" />
+    <!-- Left face -->
+    <polygon points="0,15 40,30 40,70 0,55" fill="#FFA000" />
+    <!-- Right face -->
+    <polygon points="40,30 80,15 80,55 40,70" fill="#FFC107" />
+    <!-- Tape/Line -->
+    <line x1="20" y1="7" x2="60" y2="22" stroke="#D48806" stroke-width="4" />
+    <line x1="40" y1="30" x2="40" y2="70" stroke="#D48806" stroke-width="4" />
+  </g>
+</svg>
