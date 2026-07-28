@@ -83,7 +83,7 @@ export function Navbar() {
                 <Menu size={24} />
               </button>
               <Link href="/" className="flex items-center">
-                <img src="/logo.png" alt="OYK Logo" className="h-10 w-auto" />
+                <img src="/logo.svg" alt="OYK Logo" className="h-10 w-auto" />
               </Link>
             </div>
 
@@ -210,7 +210,7 @@ export function Navbar() {
           <div className="relative w-[85%] max-w-sm bg-white h-full flex flex-col shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-300">
             {/* Drawer Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gray-50">
-               <img src="/logo.png" alt="OYK Logo" className="h-8 w-auto" />
+               <img src="/logo.svg" alt="OYK Logo" className="h-8 w-auto" />
                <button 
                  onClick={() => setIsMobileMenuOpen(false)}
                  className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200 rounded-full transition-colors"
