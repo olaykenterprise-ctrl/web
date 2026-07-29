@@ -22,7 +22,7 @@ export function AddToCartButton({ product }: { product: Product }) {
       className={`w-full py-4 rounded-xl text-lg font-bold transition-all duration-300 flex items-center justify-center gap-2
         ${added 
           ? 'bg-green-500 text-white shadow-lg shadow-green-500/30' 
-          : 'bg-primary text-white hover:bg-primary-dark shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1'
+          : 'bg-accent text-primary-dark hover:bg-accent-dark shadow-lg shadow-accent/30 hover:shadow-accent/50 hover:-translate-y-1'
         }`}
     >
       {added ? (

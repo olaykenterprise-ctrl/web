@@ -36,7 +36,7 @@ export function ProductCard(product: Product) {
       {/* Badges and Actions */}
       <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-10">
         {discountBadge ? (
-          <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-sm">
+          <span className="bg-accent text-primary-dark text-[10px] font-bold px-2 py-1 rounded-sm">
             {discountBadge}
           </span>
         ) : (
@@ -97,10 +97,10 @@ export function ProductCard(product: Product) {
           <button 
             onClick={handleAddToCart}
             disabled={added}
-            className={`w-full border-2 py-2 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center justify-center gap-2
+            className={`w-full py-2 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2
               ${added 
-                ? 'bg-green-500 border-green-500 text-white' 
-                : 'border-primary text-primary hover:bg-primary hover:text-white'
+                ? 'bg-green-500 text-white' 
+                : 'bg-accent text-primary-dark hover:bg-accent-dark hover:text-white hover:scale-[1.02]'
               }`}
           >
             {added ? (

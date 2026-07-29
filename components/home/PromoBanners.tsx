@@ -13,7 +13,7 @@ export function PromoBanners() {
           <div className="z-10 w-2/3">
             <p className="text-white/80 text-xs font-bold uppercase tracking-wider mb-2">Power Up Anywhere!</p>
             <h3 className="text-white text-2xl font-bold leading-tight mb-4">High Capacity Powerbanks for Every Lifestyle</h3>
-            <Link href="/category/powerbanks" className="inline-flex items-center gap-1 text-white text-sm font-semibold hover:underline">
+            <Link href="/category/powerbanks" className="inline-flex items-center gap-1 text-accent text-sm font-bold hover:underline hover:scale-105 transition-transform">
               Shop Powerbanks <ArrowRight size={16} />
             </Link>
           </div>
@@ -35,7 +35,7 @@ export function PromoBanners() {
             <div className="z-10 w-2/3">
               <p className="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Stay Charged!</p>
               <h3 className="text-white text-lg font-bold leading-tight mb-2">Magnetic Powerbanks<br/>Fast. Wireless. Convenient.</h3>
-              <Link href="/category/magnetic" className="inline-flex items-center gap-1 text-primary text-xs font-semibold hover:underline">
+              <Link href="/category/magnetic" className="inline-flex items-center gap-1 text-accent text-xs font-bold hover:underline hover:scale-105 transition-transform">
                 Shop Now <ArrowRight size={14} />
               </Link>
             </div>

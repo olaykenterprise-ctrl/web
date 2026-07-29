@@ -20,7 +20,7 @@ export function HeroBanner() {
           </p>
           
           <div className="flex flex-wrap gap-4 mb-8">
-            <Link href="/shop" className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-full font-semibold transition-colors">
+            <Link href="/shop" className="bg-accent hover:bg-accent-dark text-primary-dark px-8 py-3 rounded-full font-bold transition-colors hover:scale-105 inline-block">
               Shop Now
             </Link>
             <Link href="/deals" className="bg-transparent border border-gray-600 hover:border-white text-white px-8 py-3 rounded-full font-semibold transition-colors">

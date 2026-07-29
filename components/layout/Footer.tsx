@@ -38,7 +38,7 @@ function YoutubeIcon({ size = 18 }: { size?: number }) {
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a0a0a] text-gray-300 py-12 border-t border-gray-800">
+    <footer className="bg-primary text-gray-300 py-12 border-t border-primary-dark">
       <div className="container-custom">
         {/* Desktop Layout */}
         <div className="hidden md:grid grid-cols-1 md:grid-cols-5 gap-8 mb-12">
@@ -192,9 +192,9 @@ export function Footer() {
           </details>
           
           {/* Mobile Branding */}
-          <div className="py-6 flex flex-col items-center border-t border-gray-800 mt-2">
-            <Link href="/" className="flex items-center">
-              <img src="/logo.png" alt="OYK Logo" className="h-10 w-auto brightness-0 invert opacity-80 hover:opacity-100 transition-opacity" />
+          <div className="py-6 flex flex-col items-center border-t border-primary-dark mt-2">
+            <Link href="/" className="flex items-center bg-white p-1 rounded">
+              <img src="/logo.svg" alt="OYK Logo" className="h-10 w-auto" />
             </Link>
           </div>
         </div>
