@@ -199,3 +199,8 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   await new Promise((resolve) => setTimeout(resolve, 500));
   return MOCK_PRODUCTS.find((product) => product.slug === slug) || null;
 }
+
+export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  return MOCK_PRODUCTS.filter((product) => product.category === categorySlug);
+}

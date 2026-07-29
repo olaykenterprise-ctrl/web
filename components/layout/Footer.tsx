@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronDown, Zap } from "lucide-react";
 
 // Inline Brand SVG icons for reliability across all lucide-react versions
