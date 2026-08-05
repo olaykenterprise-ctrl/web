@@ -35,6 +35,15 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
     );
   };
 
+  // Helper to check if a URL is a YouTube link and get its embed URL
+  const getYoutubeEmbedUrl = (url: string) => {
+    if (!url) return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  };
+
+  const isVideo = (url: string) => !!getYoutubeEmbedUrl(url);
+
   return (
     <div className="bg-white min-h-screen pb-32 md:pb-12">
       {/* Mobile Sticky Tabs (Approximation for scroll functionality) */}
@@ -57,20 +66,38 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
                 <button 
                   key={i} 
                   onClick={() => setActiveImage(i)}
-                  className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === i ? 'border-[#FFC107]' : 'border-transparent hover:border-gray-200'} bg-gray-50`}
+                  className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === i ? 'border-[#FFC107]' : 'border-transparent hover:border-gray-200'} bg-gray-50 flex items-center justify-center`}
                 >
-                  <Image src={img} alt={`${product.name} thumbnail ${i+1}`} fill className="object-contain p-2" />
+                  {isVideo(img) ? (
+                    <div className="w-full h-full bg-black flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur">
+                        <div className="w-0 h-0 border-t-4 border-t-transparent border-l-6 border-l-white border-b-4 border-b-transparent ml-1"></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <Image src={img} alt={`${product.name} thumbnail ${i+1}`} fill className="object-contain p-2" />
+                  )}
                 </button>
               ))}
             </div>
             {/* Main Image */}
             <div className="relative flex-1 aspect-[4/5] bg-gray-50 rounded-3xl border border-gray-100 overflow-hidden flex items-center justify-center group">
-              <Image 
-                src={product.galleryImages?.[activeImage] || product.image} 
-                alt={product.name} 
-                fill 
-                className="object-contain p-8 md:p-12 transition-transform duration-500"
-              />
+              {product.galleryImages?.[activeImage] && isVideo(product.galleryImages[activeImage]) ? (
+                 <iframe
+                 src={getYoutubeEmbedUrl(product.galleryImages[activeImage])!}
+                 title="YouTube video player"
+                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                 allowFullScreen
+                 className="absolute inset-0 w-full h-full"
+               ></iframe>
+              ) : (
+                <Image 
+                  src={product.galleryImages?.[activeImage] || product.image} 
+                  alt={product.name} 
+                  fill 
+                  className="object-contain p-8 md:p-12 transition-transform duration-500"
+                />
+              )}
             </div>
           </div>
 
