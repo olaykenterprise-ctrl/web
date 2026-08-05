@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "K.E Sample – Printing, Equipment & Business Services Marketplace",
-  description: "The marketplace for printing, equipment & business services",
+  title: "OlaYK Enterprise – Powerbanks, Cables & Accessories",
+  description: "Your one-stop shop for premium powerbanks, cables, and mobile accessories.",
 };
 
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
