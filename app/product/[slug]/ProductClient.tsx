@@ -237,8 +237,8 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
         <div className="space-y-12">
           
           {/* Key Features Banner */}
-          {product.keyFeatures && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6 md:p-8 bg-gray-50 rounded-3xl border border-gray-100">
+          {product.keyFeatures && product.keyFeatures.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-6 p-6 md:p-8 bg-gray-50 rounded-3xl border border-gray-100">
               {product.keyFeatures.map((feat: any, i: number) => (
                 <div key={i} className="flex items-center gap-4">
                   <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
@@ -257,7 +257,7 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
           )}
 
           {/* Rich Content Banner */}
-          {product.richContent && (
+          {product.richContent && Object.keys(product.richContent).length > 0 && product.richContent.audiences && (
             <div className="bg-gray-100 rounded-3xl overflow-hidden relative min-h-[400px] flex items-center">
               <Image src={product.richContent.image} alt={product.richContent.heading} fill className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-gray-50/90 to-transparent"></div>
@@ -287,7 +287,7 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
             <div>
               <h3 className="text-2xl font-black text-gray-900 mb-6">Product Specifications</h3>
               <div className="border border-gray-100 rounded-2xl overflow-hidden">
-                {product.specifications && Object.entries(product.specifications).map(([key, value], i) => (
+                {product.specifications && Object.keys(product.specifications).length > 0 && Object.entries(product.specifications).map(([key, value], i) => (
                   <div key={key} className={`flex py-3 px-4 ${i % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
                     <div className="w-1/3 text-sm font-bold text-gray-600">{key}</div>
                     <div className="w-2/3 text-sm text-gray-900">{value as string}</div>
@@ -300,7 +300,7 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
               <h3 className="text-2xl font-black text-gray-900 mb-6">What's in the Box</h3>
               <div className="bg-gray-50 rounded-3xl p-8 flex flex-col sm:flex-row items-center gap-8 border border-gray-100 h-[calc(100%-3rem)]">
                 <ul className="space-y-4 flex-1">
-                  {product.whatsInTheBox?.map((item, i) => (
+                  {product.whatsInTheBox && product.whatsInTheBox.length > 0 && product.whatsInTheBox.map((item, i) => (
                     <li key={i} className="flex gap-3 text-sm font-bold text-gray-700">
                       <CheckCircle2 size={20} className="text-green-500 shrink-0" />
                       {item}

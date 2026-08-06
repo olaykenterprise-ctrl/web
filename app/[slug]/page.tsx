@@ -70,7 +70,7 @@ export default async function LandingPage({ params }: { params: { slug: string }
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Features / Body List */}
-          {page.bodyList && page.bodyList.length > 0 && (
+          {Array.isArray(page.bodyList) && page.bodyList.length > 0 && (
             <section className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100">
               <h2 className="text-2xl font-black text-gray-900 mb-6">Why You Need This</h2>
               <ul className="space-y-4">
@@ -85,7 +85,7 @@ export default async function LandingPage({ params }: { params: { slug: string }
           )}
 
           {/* Photo Gallery */}
-          {page.photos && page.photos.length > 0 && (
+          {Array.isArray(page.photos) && page.photos.length > 0 && (
             <section className="grid grid-cols-2 gap-4">
               {page.photos.map((photo, index) => (
                 <div key={index} className={`relative rounded-3xl overflow-hidden shadow-sm bg-gray-200 border-4 border-white ${index === 0 && page.photos.length % 2 !== 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
