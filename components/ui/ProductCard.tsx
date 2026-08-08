@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Heart, Star, Check } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/lib/store";
@@ -10,6 +11,7 @@ export function ProductCard(product: Product) {
   const {
     id,
     name,
+    slug,
     image,
     price,
     originalPrice,
@@ -51,7 +53,7 @@ export function ProductCard(product: Product) {
       </div>
 
       {/* Product Image */}
-      <div className="relative w-full aspect-square bg-gray-50 flex items-center justify-center p-6">
+      <Link href={`/product/${slug}`} className="relative w-full aspect-square bg-gray-50 flex items-center justify-center p-6 block">
         <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-300">
           <Image
             src={image}
@@ -61,13 +63,15 @@ export function ProductCard(product: Product) {
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         </div>
-      </div>
+      </Link>
 
       {/* Product Info */}
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2 min-h-[40px]">
-          {name}
-        </h3>
+        <Link href={`/product/${slug}`} className="hover:text-primary transition-colors">
+          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2 min-h-[40px]">
+            {name}
+          </h3>
+        </Link>
         
         <div className="mt-auto">
           <div className="flex items-center gap-2 mb-1">
