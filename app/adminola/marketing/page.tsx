@@ -33,29 +33,7 @@ export default async function AdminMarketingPage() {
         </Link>
       </div>
 
-      {/* Campaigns Banner */}
-      <div className="bg-gradient-to-r from-gray-900 to-[#0F172A] rounded-2xl p-6 md:p-8 text-white shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-2 max-w-xl">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/30">
-            <Sparkles size={14} /> Active Promo Campaign
-          </div>
-          <h3 className="text-xl font-bold">Summer Flash Sale 2026</h3>
-          <p className="text-gray-300 text-xs leading-relaxed">
-            Running on Meta & Google Ads. Directing traffic to high-capacity powerbank bundles.
-          </p>
-        </div>
 
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="bg-white/10 px-4 py-2.5 rounded-xl text-center border border-white/10">
-            <p className="text-[10px] text-gray-400 font-bold uppercase">CTR</p>
-            <p className="text-base font-black text-emerald-400">4.8%</p>
-          </div>
-          <div className="bg-white/10 px-4 py-2.5 rounded-xl text-center border border-white/10">
-            <p className="text-[10px] text-gray-400 font-bold uppercase">Leads</p>
-            <p className="text-base font-black text-white">142</p>
-          </div>
-        </div>
-      </div>
 
       {/* Landing Pages Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100/80 overflow-hidden">

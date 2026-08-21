@@ -1,16 +1,34 @@
 export const dynamic = "force-dynamic";
 
+import { getAdminDashboardData } from "@/lib/admin-data";
 import { BarChart3, TrendingUp, DollarSign, Users, ShoppingBag } from "lucide-react";
 import { SalesAnalyticsChart } from "@/components/admin/SalesAnalyticsChart";
 import { DateRangePicker } from "@/components/admin/DateRangePicker";
 
-export default function AdminAnalyticsPage() {
-  const categories = [
-    { name: "Powerbanks", sales: 580000, share: "46.4%", orders: 48 },
-    { name: "Content Creation", sales: 340000, share: "27.2%", orders: 24 },
-    { name: "Cables & Adapters", sales: 180000, share: "14.4%", orders: 42 },
-    { name: "Phone Accessories", sales: 150000, share: "12.0%", orders: 20 },
-  ];
+import { createClient } from "@/utils/supabase/server";
+
+export default async function AdminAnalyticsPage() {
+  const { metrics } = await getAdminDashboardData();
+  const supabase = await createClient();
+  const { data: products } = await supabase.from("products").select("category, price, sold_count");
+  
+  // AOV Calculation
+  const aov = metrics.totalOrders > 0 ? metrics.totalSales / metrics.totalOrders : 0;
+
+  // Category computation
+  const categoryMap: Record<string, { sales: number; orders: number }> = {};
+  (products || []).forEach(p => {
+    const cat = p.category || "Uncategorized";
+    if (!categoryMap[cat]) categoryMap[cat] = { sales: 0, orders: 0 };
+    categoryMap[cat].sales += (p.price * (p.sold_count || 0));
+    categoryMap[cat].orders += (p.sold_count || 0);
+  });
+
+  const categories = Object.keys(categoryMap).map(name => {
+    const data = categoryMap[name];
+    const share = metrics.totalSales > 0 ? ((data.sales / metrics.totalSales) * 100).toFixed(1) + "%" : "0%";
+    return { name, sales: data.sales, share, orders: data.orders };
+  }).sort((a, b) => b.sales - a.sales);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -31,34 +49,34 @@ export default function AdminAnalyticsPage() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500">Gross Sales</span>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+12.5%</span>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+0%</span>
           </div>
-          <p className="text-2xl font-black text-gray-900 mt-2">₦1,250,000</p>
+          <p className="text-2xl font-black text-gray-900 mt-2">₦{metrics.totalSales.toLocaleString()}</p>
           <p className="text-[11px] text-gray-400 mt-1">Total revenue collected this week</p>
         </div>
 
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500">Average Order Value (AOV)</span>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+4.8%</span>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+0%</span>
           </div>
-          <p className="text-2xl font-black text-gray-900 mt-2">₦14,045</p>
+          <p className="text-2xl font-black text-gray-900 mt-2">₦{Math.round(aov).toLocaleString()}</p>
           <p className="text-[11px] text-gray-400 mt-1">Average spent per checkout</p>
         </div>
 
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-500">Checkout Conversion</span>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+1.2%</span>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+0%</span>
           </div>
-          <p className="text-2xl font-black text-gray-900 mt-2">3.6%</p>
+          <p className="text-2xl font-black text-gray-900 mt-2">{metrics.conversionRate}</p>
           <p className="text-[11px] text-gray-400 mt-1">Visitors completing purchases</p>
         </div>
       </div>
 
       {/* Main Chart */}
       <div>
-        <SalesAnalyticsChart />
+        <SalesAnalyticsChart totalSales={metrics.totalSales} />
       </div>
 
       {/* Category Performance Breakdown */}
