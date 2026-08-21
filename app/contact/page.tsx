@@ -69,26 +69,54 @@ export default function ContactPage() {
                 </button>
               </div>
             ) : (
-              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+              <form
+                className="space-y-4"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const firstName = formData.get("firstName") as string || "";
+                  const lastName = formData.get("lastName") as string || "";
+                  const email = formData.get("email") as string || "";
+                  const subject = formData.get("subject") as string || "General Inquiry";
+                  const message = formData.get("message") as string || "";
+
+                  try {
+                    await fetch("/api/messages", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        name: `${firstName} ${lastName}`.trim() || "Customer",
+                        email,
+                        subject,
+                        message
+                      })
+                    });
+                  } catch (err) {
+                    console.error("Message send error:", err);
+                  }
+
+                  setSubmitted(true);
+                }}
+              >
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" id="firstName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="John" />
+                    <input type="text" id="firstName" name="firstName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="John" />
                   </div>
                   <div className="space-y-1">
                     <label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</label>
-                    <input type="text" id="lastName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Doe" />
+                    <input type="text" id="lastName" name="lastName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Doe" />
                   </div>
                 </div>
                 
                 <div className="space-y-1">
                   <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
-                  <input type="email" id="email" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="john@example.com" />
+                  <input type="email" id="email" name="email" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="john@example.com" />
                 </div>
 
                 <div className="space-y-1">
                   <label htmlFor="subject" className="text-sm font-medium text-gray-700">Subject</label>
-                  <select id="subject" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white">
+                  <select id="subject" name="subject" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white">
                     <option>Order Inquiry</option>
                     <option>Product Question</option>
                     <option>Returns & Refunds</option>
@@ -99,7 +127,7 @@ export default function ContactPage() {
 
                 <div className="space-y-1">
                   <label htmlFor="message" className="text-sm font-medium text-gray-700">Message</label>
-                  <textarea id="message" required rows={5} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none" placeholder="How can we help you?"></textarea>
+                  <textarea id="message" name="message" required rows={5} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none" placeholder="How can we help you?"></textarea>
                 </div>
 
                 <button type="submit" className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 shadow-lg shadow-primary/20">

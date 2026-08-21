@@ -1,36 +1,10 @@
-import { Mail, Search, CheckCircle, Clock, Reply } from "lucide-react";
-
-const MESSAGES = [
-  {
-    id: "msg-1",
-    name: "Olayinka Shittu",
-    email: "shittuolayinka2@gmail.com",
-    subject: "Order Inquiry",
-    message: "I need 10 quantities of the 20000mAh power bank for our office team. Can I get a wholesale discount?",
-    date: "Today, 9:30 AM",
-    status: "New",
-  },
-  {
-    id: "msg-2",
-    name: "Chukwudi Eze",
-    email: "chukwudi.eze@gmail.com",
-    subject: "Product Question",
-    message: "Does the 60W Type-C cable support fast charging on Samsung Galaxy S24 Ultra?",
-    date: "Yesterday, 4:15 PM",
-    status: "Replied",
-  },
-  {
-    id: "msg-3",
-    name: "Amina Yusuf",
-    email: "amina.y@yahoo.com",
-    subject: "Returns & Refunds",
-    message: "I received my order #1019 yesterday in Kaduna. Excellent packaging and fast delivery!",
-    date: "Aug 24, 2026",
-    status: "Replied",
-  },
-];
+import { Mail, Search, Reply } from "lucide-react";
+import { getCustomerMessages } from "@/lib/admin-data";
 
 export default function AdminMessagesPage() {
+  const messages = getCustomerMessages();
+  const unreadCount = messages.filter((m) => m.status === "New").length;
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       {/* Header */}
@@ -38,21 +12,23 @@ export default function AdminMessagesPage() {
         <div>
           <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Customer Messages & Inquiries</h1>
           <p className="text-xs font-medium text-gray-500 mt-1">
-            Read and respond to messages submitted via the Contact page and store inquiries.
+            Read and respond to inquiries submitted via the store Contact form in real time.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3.5 py-2 rounded-xl border border-emerald-200 flex items-center gap-2">
             <Mail size={15} className="text-[#00875A]" />
-            <span>3 Inquiries (1 Unread)</span>
+            <span>
+              {messages.length} Total ({unreadCount} New)
+            </span>
           </span>
         </div>
       </div>
 
       {/* Messages List Card */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100/80 overflow-hidden divide-y divide-gray-100">
-        {MESSAGES.map((msg) => (
+        {messages.map((msg) => (
           <div
             key={msg.id}
             className={`p-6 transition-colors hover:bg-gray-50/80 ${
@@ -103,6 +79,12 @@ export default function AdminMessagesPage() {
             </div>
           </div>
         ))}
+
+        {messages.length === 0 && (
+          <div className="py-12 text-center text-gray-400 text-xs">
+            No customer inquiries received yet.
+          </div>
+        )}
       </div>
     </div>
   );

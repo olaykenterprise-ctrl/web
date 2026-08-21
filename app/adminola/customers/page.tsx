@@ -1,75 +1,9 @@
-import { Users, Search, Mail, Phone, ShoppingBag } from "lucide-react";
-
-const CUSTOMERS = [
-  {
-    id: "cust-1",
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    phone: "+234 802 345 6789",
-    city: "Lagos",
-    ordersCount: 4,
-    totalSpent: 62000,
-    lastOrder: "Aug 26, 2026",
-    status: "Active"
-  },
-  {
-    id: "cust-2",
-    name: "Jane Smith",
-    email: "jane.smith@yahoo.com",
-    phone: "+234 813 987 6543",
-    city: "Abuja",
-    ordersCount: 2,
-    totalSpent: 45000,
-    lastOrder: "Aug 26, 2026",
-    status: "Active"
-  },
-  {
-    id: "cust-3",
-    name: "Michael Brown",
-    email: "michael.b@hotmail.com",
-    phone: "+234 705 112 2334",
-    city: "Ikeja, Lagos",
-    ordersCount: 3,
-    totalSpent: 38500,
-    lastOrder: "Aug 25, 2026",
-    status: "Active"
-  },
-  {
-    id: "cust-4",
-    name: "Sarah Wilson",
-    email: "sarah.wilson@gmail.com",
-    phone: "+234 809 887 7665",
-    city: "Port Harcourt",
-    ordersCount: 5,
-    totalSpent: 84000,
-    lastOrder: "Aug 25, 2026",
-    status: "VIP"
-  },
-  {
-    id: "cust-5",
-    name: "Chidi Okafor",
-    email: "chidi.okafor@gmail.com",
-    phone: "+234 803 445 5667",
-    city: "Lekki, Lagos",
-    ordersCount: 1,
-    totalSpent: 32000,
-    lastOrder: "Aug 24, 2026",
-    status: "New"
-  },
-  {
-    id: "cust-6",
-    name: "Fatima Aliyu",
-    email: "fatima.a@outlook.com",
-    phone: "+234 818 223 3445",
-    city: "Kaduna",
-    ordersCount: 2,
-    totalSpent: 19000,
-    lastOrder: "Aug 24, 2026",
-    status: "Active"
-  }
-];
+import { Users, Search } from "lucide-react";
+import { getAdminCustomersData } from "@/lib/admin-data";
 
 export default function AdminCustomersPage() {
+  const customers = getAdminCustomersData();
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       {/* Header */}
@@ -84,7 +18,7 @@ export default function AdminCustomersPage() {
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold text-gray-700 bg-white px-3.5 py-2 rounded-xl border border-gray-200 shadow-sm flex items-center gap-2">
             <Users size={15} className="text-[#3B82F6]" />
-            Total: <strong>1,234 registered</strong>
+            Total: <strong>{customers.length} registered</strong>
           </span>
         </div>
       </div>
@@ -102,7 +36,7 @@ export default function AdminCustomersPage() {
           </div>
 
           <div className="flex items-center gap-2 text-xs font-bold text-gray-600">
-            <span className="px-3 py-1.5 bg-gray-100 rounded-lg cursor-pointer">All (1,234)</span>
+            <span className="px-3 py-1.5 bg-gray-100 rounded-lg cursor-pointer">All ({customers.length})</span>
             <span className="px-3 py-1.5 hover:bg-gray-100 rounded-lg cursor-pointer text-gray-500">VIP</span>
             <span className="px-3 py-1.5 hover:bg-gray-100 rounded-lg cursor-pointer text-gray-500">Repeat Buyers</span>
           </div>
@@ -121,7 +55,7 @@ export default function AdminCustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50 text-xs">
-              {CUSTOMERS.map((customer) => (
+              {customers.map((customer) => (
                 <tr key={customer.id} className="hover:bg-gray-50/70 transition-colors">
                   <td className="py-4 px-6 flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white font-bold flex items-center justify-center text-xs flex-shrink-0 shadow-sm">
@@ -145,7 +79,7 @@ export default function AdminCustomersPage() {
                     {customer.city}
                   </td>
                   <td className="py-4 px-6 font-bold text-gray-900">
-                    {customer.ordersCount} orders
+                    {customer.ordersCount} {customer.ordersCount === 1 ? "order" : "orders"}
                   </td>
                   <td className="py-4 px-6 font-bold text-[#00875A]">
                     ₦{customer.totalSpent.toLocaleString()}
@@ -155,6 +89,14 @@ export default function AdminCustomersPage() {
                   </td>
                 </tr>
               ))}
+
+              {customers.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="py-8 text-center text-gray-400 text-xs">
+                    No registered customers yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

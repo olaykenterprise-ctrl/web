@@ -1,0 +1,144 @@
+{
+  "orders": [
+    {
+      "id": "ord-1024",
+      "orderNumber": "#1024",
+      "customerName": "Olayinka Shittu",
+      "customerEmail": "shittuolayinka2@gmail.com",
+      "customerPhone": "+234 802 345 6789",
+      "amount": 18500,
+      "status": "Processing",
+      "date": "Aug 26, 2026",
+      "itemsCount": 1,
+      "shippingAddress": "14 Admiralty Way, Lekki Phase 1, Lagos, Lagos",
+      "items": [
+        {
+          "name": "30000mAh Powerbank 65W Fast Charge",
+          "quantity": 1,
+          "price": 18500,
+          "image": "/placeholder.png"
+        }
+      ]
+    },
+    {
+      "id": "ord-1023",
+      "orderNumber": "#1023",
+      "customerName": "Chukwudi Eze",
+      "customerEmail": "chukwudi.eze@gmail.com",
+      "customerPhone": "+234 813 987 6543",
+      "amount": 25000,
+      "status": "Shipped",
+      "date": "Aug 26, 2026",
+      "itemsCount": 2,
+      "shippingAddress": "42 Gana Street, Maitama, Abuja, Abuja (FCT)",
+      "items": [
+        {
+          "name": "20000mAh Powerbank 22.5W Fast Charge",
+          "quantity": 1,
+          "price": 11900
+        },
+        {
+          "name": "10\" LED Ring Light with Tripod Stand",
+          "quantity": 1,
+          "price": 8990
+        }
+      ]
+    },
+    {
+      "id": "ord-1022",
+      "orderNumber": "#1022",
+      "customerName": "Michael Brown",
+      "customerEmail": "michael.b@hotmail.com",
+      "customerPhone": "+234 705 112 2334",
+      "amount": 12500,
+      "status": "Delivered",
+      "date": "Aug 25, 2026",
+      "itemsCount": 1,
+      "shippingAddress": "8 Allen Avenue, Ikeja, Lagos, Lagos",
+      "items": [
+        {
+          "name": "Wireless Lavalier Microphone",
+          "quantity": 2,
+          "price": 6150
+        }
+      ]
+    },
+    {
+      "id": "ord-1021",
+      "orderNumber": "#1021",
+      "customerName": "Sarah Wilson",
+      "customerEmail": "sarah.wilson@gmail.com",
+      "customerPhone": "+234 809 887 7665",
+      "amount": 18000,
+      "status": "Processing",
+      "date": "Aug 25, 2026",
+      "itemsCount": 2,
+      "shippingAddress": "Plot 12 Trans Amadi, Port Harcourt, Rivers",
+      "items": [
+        {
+          "name": "10000mAh Magnetic Powerbank (Wireless)",
+          "quantity": 1,
+          "price": 10800
+        },
+        {
+          "name": "True Wireless Earbuds",
+          "quantity": 1,
+          "price": 7900
+        }
+      ]
+    },
+    {
+      "id": "ord-1020",
+      "orderNumber": "#1020",
+      "customerName": "Amina Yusuf",
+      "customerEmail": "amina.y@yahoo.com",
+      "customerPhone": "+234 818 223 3445",
+      "amount": 32000,
+      "status": "Delivered",
+      "date": "Aug 24, 2026",
+      "itemsCount": 3,
+      "shippingAddress": "19 Ahmadu Bello Way, Kaduna, Kaduna"
+    },
+    {
+      "id": "ord-1019",
+      "orderNumber": "#1019",
+      "customerName": "Emeka Nwosu",
+      "customerEmail": "emeka.nwosu@gmail.com",
+      "customerPhone": "+234 805 667 7889",
+      "amount": 45000,
+      "status": "Delivered",
+      "date": "Aug 23, 2026",
+      "itemsCount": 4,
+      "shippingAddress": "22 New Market Road, Onitsha, Anambra"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg-1",
+      "name": "Olayinka Shittu",
+      "email": "shittuolayinka2@gmail.com",
+      "subject": "Order Inquiry",
+      "message": "I need 10 quantities of the 20000mAh power bank for our office team. Can I get a wholesale discount?",
+      "date": "Today, 9:30 AM",
+      "status": "New"
+    },
+    {
+      "id": "msg-2",
+      "name": "Chukwudi Eze",
+      "email": "chukwudi.eze@gmail.com",
+      "subject": "Product Question",
+      "message": "Does the 60W Type-C cable support fast charging on Samsung Galaxy S24 Ultra?",
+      "date": "Yesterday, 4:15 PM",
+      "status": "Replied"
+    },
+    {
+      "id": "msg-3",
+      "name": "Amina Yusuf",
+      "email": "amina.y@yahoo.com",
+      "subject": "Returns & Refunds",
+      "message": "I received my order #1019 yesterday in Kaduna. Excellent packaging and fast delivery!",
+      "date": "Aug 24, 2026",
+      "status": "Replied"
+    }
+  ]
+}
