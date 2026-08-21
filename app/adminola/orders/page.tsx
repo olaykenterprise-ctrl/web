@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getAdminDashboardData } from "@/lib/admin-data";
 import { ShoppingCart, Search, Filter, Eye, CheckCircle2, Clock, Truck, XCircle } from "lucide-react";
 import Link from "next/link";

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { Plus, Edit, Trash2, ExternalLink, FileX } from "lucide-react";

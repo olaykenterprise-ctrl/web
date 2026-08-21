@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Mail, Search, Reply } from "lucide-react";
 import { getCustomerMessages } from "@/lib/admin-data";
 

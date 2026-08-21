@@ -7,6 +7,8 @@ import { RecentOrdersTable } from "@/components/admin/RecentOrdersTable";
 import { TopProductsWidget } from "@/components/admin/TopProductsWidget";
 import { DateRangePicker } from "@/components/admin/DateRangePicker";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   const data = await getAdminDashboardData();
   const { metrics, recentOrders, topProducts, activities } = data;

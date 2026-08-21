@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { BarChart3, TrendingUp, DollarSign, Users, ShoppingBag } from "lucide-react";
 import { SalesAnalyticsChart } from "@/components/admin/SalesAnalyticsChart";
 import { DateRangePicker } from "@/components/admin/DateRangePicker";

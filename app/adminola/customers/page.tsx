@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Users, Search } from "lucide-react";
 import { getAdminCustomersData } from "@/lib/admin-data";
 

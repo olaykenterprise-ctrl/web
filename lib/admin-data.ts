@@ -164,52 +164,74 @@ export async function getAdminDashboardData() {
   // Fallback to items sold / average items per order (let's say 2) if store orders is very low
   const totalCustomers = uniqueCustomers + Math.floor(totalItemsSold / 2);
 
+  // Calculate dynamic conversion rate
+  const computedConversion = totalCustomers > 0 ? ((totalOrders / (totalCustomers * 1.5)) * 100).toFixed(1) : "0.0";
+
   // 4. Generate dynamic Recent Activity stream from real orders, products, and messages
   const latestOrder = orders[0];
   const latestMessage = messages[0];
-  const lowStockProduct = products.find(p => (p.sold_count || 0) > 1500) || products[0];
+  const lowStockProduct = products.find(p => (p.sold_count || 0) > 1500);
 
-  const activities: Activity[] = [
-    {
+  const activities: Activity[] = [];
+  
+  if (latestOrder) {
+    activities.push({
       id: "act-1",
       type: "order",
       title: "New order placed",
-      detail: latestOrder ? `Order ${latestOrder.orderNumber} – ₦${latestOrder.amount.toLocaleString()}` : "Order #1024 – ₦18,500",
-      time: "5 min ago"
-    },
-    {
+      detail: `Order ${latestOrder.orderNumber} – ₦${latestOrder.amount.toLocaleString()}`,
+      time: "Just now"
+    });
+  }
+  if (latestMessage) {
+    activities.push({
       id: "act-2",
       type: "customer",
       title: "New customer inquiry",
-      detail: latestMessage ? `${latestMessage.name} (${latestMessage.subject})` : "Olayinka Shittu",
-      time: "12 min ago"
-    },
-    {
+      detail: `${latestMessage.name} (${latestMessage.subject})`,
+      time: "Recently"
+    });
+  }
+  if (lowStockProduct) {
+    activities.push({
       id: "act-3",
       type: "stock",
       title: "High-demand product alert",
-      detail: lowStockProduct ? `${lowStockProduct.name.slice(0, 26)}...` : "Wireless Lavalier Microphone",
-      time: "1 hour ago"
-    },
-    {
+      detail: `${lowStockProduct.name.slice(0, 26)}...`,
+      time: "Recent"
+    });
+  }
+  if (landingPageCount && landingPageCount > 0) {
+    activities.push({
       id: "act-4",
       type: "marketing",
       title: "Marketing campaign",
-      detail: (landingPageCount || 0) > 0 ? "Promotional funnel active" : "Summer Flash Sale launched",
-      time: "2 hours ago"
-    }
-  ];
+      detail: "Promotional funnel active",
+      time: "Ongoing"
+    });
+  }
+
+  // If literally no activities, provide a single generic one so the feed isn't entirely broken
+  if (activities.length === 0) {
+    activities.push({
+      id: "act-empty",
+      type: "stock",
+      title: "System Status",
+      detail: "All systems running smoothly.",
+      time: "Just now"
+    });
+  }
 
   return {
     metrics: {
       totalSales: totalSales,
-      totalSalesGrowth: "+12.5%",
+      totalSalesGrowth: "+0%",
       totalCustomers: totalCustomers,
-      totalCustomersGrowth: "+8.2%",
+      totalCustomersGrowth: "+0%",
       totalOrders: totalOrders,
-      totalOrdersGrowth: "+14.3%",
-      conversionRate: "3.6%",
-      conversionGrowth: "+1.2%",
+      totalOrdersGrowth: "+0%",
+      conversionRate: `${computedConversion}%`,
+      conversionGrowth: "+0%",
       productCount: productCount || products.length,
       landingPageCount: landingPageCount || 0,
       totalCatalogSoldRevenue
