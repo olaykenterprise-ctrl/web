@@ -61,6 +61,8 @@ const DATA_BY_RANGE: Record<TimeRange, { points: ChartPoint[]; peak: string; pea
       { label: "Dec", value: 810, displayValue: "₦16,500,000" },
     ]
   }
+};
+
 export function SalesAnalyticsChart({ totalSales = 1250000 }: { totalSales?: number }) {
   const [activeTab, setActiveTab] = useState<TimeRange>("Today");
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
