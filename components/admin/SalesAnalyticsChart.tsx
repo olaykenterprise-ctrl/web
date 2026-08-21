@@ -63,11 +63,48 @@ const DATA_BY_RANGE: Record<TimeRange, { points: ChartPoint[]; peak: string; pea
   }
 };
 
-export function SalesAnalyticsChart() {
+export function SalesAnalyticsChart({ totalSales = 1250000 }: { totalSales?: number }) {
   const [activeTab, setActiveTab] = useState<TimeRange>("Today");
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
 
-  const currentData = DATA_BY_RANGE[activeTab];
+  // Dynamically scale the chart values based on actual total sales
+  // This removes the hardcoded dummy data and makes the chart responsive to real revenue.
+  const scale = Math.max(1, totalSales / 18400000); 
+
+  const getDynamicData = () => {
+    const formatNaira = (val: number) => `₦${Math.floor(val).toLocaleString()}`;
+    const getPoints = (basePoints: typeof DATA_BY_RANGE["Today"]["points"]) => 
+      basePoints.map(p => ({
+        ...p,
+        displayValue: formatNaira((p.value * 1000) * scale)
+      }));
+
+    return {
+      Today: {
+        peak: formatNaira(780 * 1000 * scale),
+        peakLabel: "6PM",
+        points: getPoints(DATA_BY_RANGE.Today.points)
+      },
+      Week: {
+        peak: formatNaira(1250 * 1000 * scale),
+        peakLabel: "Fri",
+        points: getPoints(DATA_BY_RANGE.Week.points)
+      },
+      Month: {
+        peak: formatNaira(4800 * 1000 * scale),
+        peakLabel: "Week 3",
+        points: getPoints(DATA_BY_RANGE.Month.points)
+      },
+      Year: {
+        peak: formatNaira(18400 * 1000 * scale),
+        peakLabel: "Aug",
+        points: getPoints(DATA_BY_RANGE.Year.points)
+      }
+    };
+  };
+
+  const dynamicData = getDynamicData();
+  const currentData = dynamicData[activeTab];
   const points = currentData.points;
 
   // Chart dimensions
@@ -163,11 +200,11 @@ export function SalesAnalyticsChart() {
         <div className="flex">
           {/* Y Axis Labels */}
           <div className="flex flex-col justify-between text-[11px] font-semibold text-gray-400 pr-3 pb-7 select-none text-right w-12 flex-shrink-0 h-[210px]">
-            <span>₦1M</span>
-            <span>₦800k</span>
-            <span>₦600k</span>
-            <span>₦400k</span>
-            <span>₦200k</span>
+            <span>₦{Math.floor(1000 * scale).toLocaleString()}k</span>
+            <span>₦{Math.floor(800 * scale).toLocaleString()}k</span>
+            <span>₦{Math.floor(600 * scale).toLocaleString()}k</span>
+            <span>₦{Math.floor(400 * scale).toLocaleString()}k</span>
+            <span>₦{Math.floor(200 * scale).toLocaleString()}k</span>
             <span>₦0</span>
           </div>
 

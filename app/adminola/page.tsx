@@ -64,7 +64,7 @@ export default async function AdminDashboard() {
       {/* Row 2: Sales Analytics Chart (Left 2/3) & Recent Activity Feed (Right 1/3) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-8">
-          <SalesAnalyticsChart />
+          <SalesAnalyticsChart totalSales={metrics.totalSales} />
         </div>
         <div className="lg:col-span-4">
           <RecentActivityFeed activities={activities} />
