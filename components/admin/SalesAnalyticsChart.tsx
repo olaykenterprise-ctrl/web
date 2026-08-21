@@ -61,44 +61,44 @@ const DATA_BY_RANGE: Record<TimeRange, { points: ChartPoint[]; peak: string; pea
       { label: "Dec", value: 810, displayValue: "₦16,500,000" },
     ]
   }
-};
-
 export function SalesAnalyticsChart({ totalSales = 1250000 }: { totalSales?: number }) {
   const [activeTab, setActiveTab] = useState<TimeRange>("Today");
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
 
-  // Dynamically scale the chart values based on actual total sales
-  // This removes the hardcoded dummy data and makes the chart responsive to real revenue.
-  const scale = Math.max(1, totalSales / 18400000); 
+  // Dynamically scale the chart values based on actual total sales.
+  // Using Math.max(0.01, ...) ensures we can scale down properly for new stores without hitting 0.
+  // 18400000 is the reference "Year" peak.
+  const scale = Math.max(0.005, totalSales / 18400000); 
 
   const getDynamicData = () => {
     const formatNaira = (val: number) => `₦${Math.floor(val).toLocaleString()}`;
-    const getPoints = (basePoints: typeof DATA_BY_RANGE["Today"]["points"]) => 
+    const getPoints = (basePoints: typeof DATA_BY_RANGE["Today"]["points"], timeScale: number) => 
       basePoints.map(p => ({
         ...p,
-        displayValue: formatNaira((p.value * 1000) * scale)
+        displayValue: formatNaira((p.value * 1000) * scale * timeScale)
       }));
 
+    // Adjusting individual timeframe scales so they make sense relative to total sales
     return {
       Today: {
-        peak: formatNaira(780 * 1000 * scale),
+        peak: formatNaira(780 * 1000 * scale * 0.05),
         peakLabel: "6PM",
-        points: getPoints(DATA_BY_RANGE.Today.points)
+        points: getPoints(DATA_BY_RANGE.Today.points, 0.05)
       },
       Week: {
-        peak: formatNaira(1250 * 1000 * scale),
+        peak: formatNaira(1250 * 1000 * scale * 0.2),
         peakLabel: "Fri",
-        points: getPoints(DATA_BY_RANGE.Week.points)
+        points: getPoints(DATA_BY_RANGE.Week.points, 0.2)
       },
       Month: {
-        peak: formatNaira(4800 * 1000 * scale),
+        peak: formatNaira(4800 * 1000 * scale * 0.5),
         peakLabel: "Week 3",
-        points: getPoints(DATA_BY_RANGE.Month.points)
+        points: getPoints(DATA_BY_RANGE.Month.points, 0.5)
       },
       Year: {
-        peak: formatNaira(18400 * 1000 * scale),
+        peak: formatNaira(18400 * 1000 * scale * 1),
         peakLabel: "Aug",
-        points: getPoints(DATA_BY_RANGE.Year.points)
+        points: getPoints(DATA_BY_RANGE.Year.points, 1)
       }
     };
   };
@@ -106,6 +106,8 @@ export function SalesAnalyticsChart({ totalSales = 1250000 }: { totalSales?: num
   const dynamicData = getDynamicData();
   const currentData = dynamicData[activeTab];
   const points = currentData.points;
+  const currentScaleMultipler = activeTab === "Today" ? 0.05 : activeTab === "Week" ? 0.2 : activeTab === "Month" ? 0.5 : 1;
+  const effectiveScale = scale * currentScaleMultipler;
 
   // Chart dimensions
   const svgWidth = 600;
@@ -200,11 +202,11 @@ export function SalesAnalyticsChart({ totalSales = 1250000 }: { totalSales?: num
         <div className="flex">
           {/* Y Axis Labels */}
           <div className="flex flex-col justify-between text-[11px] font-semibold text-gray-400 pr-3 pb-7 select-none text-right w-12 flex-shrink-0 h-[210px]">
-            <span>₦{Math.floor(1000 * scale).toLocaleString()}k</span>
-            <span>₦{Math.floor(800 * scale).toLocaleString()}k</span>
-            <span>₦{Math.floor(600 * scale).toLocaleString()}k</span>
-            <span>₦{Math.floor(400 * scale).toLocaleString()}k</span>
-            <span>₦{Math.floor(200 * scale).toLocaleString()}k</span>
+            <span>₦{Math.floor(1000 * effectiveScale).toLocaleString()}k</span>
+            <span>₦{Math.floor(800 * effectiveScale).toLocaleString()}k</span>
+            <span>₦{Math.floor(600 * effectiveScale).toLocaleString()}k</span>
+            <span>₦{Math.floor(400 * effectiveScale).toLocaleString()}k</span>
+            <span>₦{Math.floor(200 * effectiveScale).toLocaleString()}k</span>
             <span>₦0</span>
           </div>
 
