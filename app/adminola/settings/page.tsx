@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { Shield, Mail, KeyRound } from "lucide-react";
+import { Shield, Mail, KeyRound, Lock } from "lucide-react";
 
 export default async function SettingsPage() {
   const supabase = await createClient();
@@ -25,85 +25,93 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-      
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-gray-900 tracking-tight">Security & Settings</h1>
-        <p className="text-gray-500 mt-1 font-medium">Manage your admin account credentials and platform security.</p>
+    <div className="max-w-4xl space-y-6 animate-in fade-in duration-500">
+      <div className="mb-6">
+        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Security & Preferences</h1>
+        <p className="text-xs font-medium text-gray-500 mt-1">Manage your admin access credentials and dashboard preferences.</p>
       </div>
 
-      <div className="space-y-8">
-        
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Profile Card */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full"></div>
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2 relative z-10">
-            <div className="p-2 bg-blue-50 text-blue-500 rounded-xl">
-              <Mail size={20} />
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-[#00875A] flex items-center justify-center">
+              <Mail size={18} />
             </div>
-            Administrator Profile
-          </h2>
-          <div className="space-y-4 relative z-10">
             <div>
-              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Registered Email Address</label>
-              <input 
-                type="text" 
-                disabled 
-                value={user?.email || ""}
-                className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 text-gray-400 font-medium cursor-not-allowed"
-              />
-              <p className="text-xs text-gray-400 font-medium mt-2">For security reasons, your admin email address cannot be changed from this dashboard. Contact support if you need to transfer ownership.</p>
+              <h3 className="text-sm font-bold text-gray-900">Administrator Profile</h3>
+              <p className="text-[11px] text-gray-400">Authenticated user account</p>
             </div>
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                Admin Email Address
+              </label>
+              <input
+                type="text"
+                disabled
+                value={user?.email || "admin@company.com"}
+                className="w-full bg-[#F4F7FB] px-3.5 py-2.5 rounded-xl border border-gray-200 text-gray-500 text-xs font-medium cursor-not-allowed"
+              />
+            </div>
+            <p className="text-[11px] text-gray-400 leading-relaxed">
+              Your email is used to log in and receive notifications. Contact super admin to modify.
+            </p>
           </div>
         </div>
 
         {/* Change Password Card */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-bl-full"></div>
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2 relative z-10">
-            <div className="p-2 bg-red-50 text-red-500 rounded-xl">
-              <KeyRound size={20} />
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <KeyRound size={18} />
             </div>
-            Change Password
-          </h2>
-          <form action={updatePassword} className="space-y-6 relative z-10">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block">New Password</label>
-                <input 
-                  type="password" 
-                  name="password"
-                  required
-                  minLength={6}
-                  className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:bg-white transition-all text-gray-900 font-medium"
-                  placeholder="••••••••"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-500 uppercase tracking-wider block">Confirm New Password</label>
-                <input 
-                  type="password" 
-                  name="confirmPassword"
-                  required
-                  minLength={6}
-                  className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:bg-white transition-all text-gray-900 font-medium"
-                  placeholder="••••••••"
-                />
-              </div>
+            <div>
+              <h3 className="text-sm font-bold text-gray-900">Change Password</h3>
+              <p className="text-[11px] text-gray-400">Update your access password</p>
             </div>
-            <div className="pt-2">
-              <button
-                type="submit"
-                className="flex items-center gap-2 bg-gray-900 hover:bg-black text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-lg hover:-translate-y-1"
-              >
-                <Shield size={18} />
-                Update Secure Password
-              </button>
+          </div>
+
+          <form action={updatePassword} className="space-y-3">
+            <div>
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                New Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={6}
+                placeholder="••••••••"
+                className="w-full bg-[#F4F7FB] focus:bg-white px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none transition-all"
+              />
             </div>
+
+            <div>
+              <label className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                required
+                minLength={6}
+                placeholder="••••••••"
+                className="w-full bg-[#F4F7FB] focus:bg-white px-3.5 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-500 text-xs text-gray-900 outline-none transition-all"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#00875A] hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 mt-2"
+            >
+              <Shield size={14} /> Update Password
+            </button>
           </form>
         </div>
       </div>
-
     </div>
   );
 }

@@ -58,68 +58,68 @@ export default function NewLandingPage() {
         className="space-y-8"
       >
         {/* Header Information Card */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-sm">1</span>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <span className="w-7 h-7 rounded-full bg-emerald-50 text-[#00875A] flex items-center justify-center text-xs font-bold">1</span>
             Header Information
           </h2>
           
-          <div className="space-y-6">
-            <div className="space-y-2">
+          <div className="space-y-5">
+            <div className="space-y-1.5">
               <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Campaign Title</label>
-              <input type="text" name="title" required className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium text-lg" placeholder="e.g., Summer Mega Sale 2026" />
+              <input type="text" name="title" required className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 font-medium text-base" placeholder="e.g., Summer Mega Sale 2026" />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Subheading / Hook</label>
-              <textarea name="subheading" required rows={3} className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium resize-none" placeholder="e.g., Get up to 50% off on all premium powerbanks and accessories this summer..."></textarea>
+              <textarea name="subheading" required rows={3} className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium resize-none" placeholder="e.g., Get up to 50% off on all premium powerbanks and accessories this summer..."></textarea>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">YouTube Video Link <span className="font-normal normal-case text-gray-400">(Optional)</span></label>
-                <input type="url" name="video_link" className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium" placeholder="https://www.youtube.com/watch?v=..." />
+                <input type="url" name="video_link" className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium" placeholder="https://www.youtube.com/watch?v=..." />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Call to Action Link</label>
-                <input type="text" name="cta_link" required defaultValue="/" className="w-full bg-gray-50 px-5 py-4 rounded-2xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium" placeholder="e.g., / or /product/my-product" />
-                <p className="text-xs text-gray-400 font-medium">Where should the "Shop Now" button go?</p>
+                <input type="text" name="cta_link" required defaultValue="/" className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium" placeholder="e.g., / or /product/my-product" />
+                <p className="text-[11px] text-gray-400 font-medium">Where should the "Shop Now" button go?</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Value Proposition List */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
-                <span className="w-8 h-8 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-sm">2</span>
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-1">
+                <span className="w-7 h-7 rounded-full bg-emerald-50 text-[#00875A] flex items-center justify-center text-xs font-bold">2</span>
                 Value Proposition
               </h2>
-              <p className="text-sm text-gray-500 ml-10">List the key benefits or features of this offer.</p>
+              <p className="text-xs text-gray-500 ml-9">List the key benefits or features of this offer.</p>
             </div>
-            <button type="button" onClick={addBodyItem} className="flex items-center gap-2 text-sm font-bold bg-gray-900 text-white hover:bg-black px-4 py-2 rounded-xl transition-all">
-              <Plus size={16} /> Add Benefit
+            <button type="button" onClick={addBodyItem} className="flex items-center gap-1.5 text-xs font-bold bg-gray-900 text-white hover:bg-black px-3.5 py-2 rounded-xl transition-all">
+              <Plus size={15} /> Add Benefit
             </button>
           </div>
           
-          <div className="space-y-4 ml-10">
+          <div className="space-y-3 ml-9">
             {bodyItems.map((item, index) => (
-              <div key={index} className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center shrink-0 text-green-500">
-                  <ListChecks size={20} />
+              <div key={index} className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 text-[#00875A]">
+                  <ListChecks size={18} />
                 </div>
                 <input 
                   type="text" 
                   value={item}
                   onChange={(e) => updateBodyItem(index, e.target.value)}
-                  className="flex-1 bg-gray-50 px-5 py-3.5 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium" 
+                  className="flex-1 bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium" 
                   placeholder={`Selling point ${index + 1}...`} 
                 />
-                <button type="button" onClick={() => removeBodyItem(index)} className="p-3 mt-0.5 text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 rounded-xl transition-colors shrink-0">
-                  <Trash2 size={20} />
+                <button type="button" onClick={() => removeBodyItem(index)} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 rounded-xl transition-colors shrink-0">
+                  <Trash2 size={16} />
                 </button>
               </div>
             ))}
@@ -127,35 +127,35 @@ export default function NewLandingPage() {
         </div>
 
         {/* Photo Gallery */}
-        <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2 mb-1">
-                <span className="w-8 h-8 rounded-full bg-[#FFC107]/20 text-yellow-600 flex items-center justify-center text-sm">3</span>
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-1">
+                <span className="w-7 h-7 rounded-full bg-emerald-50 text-[#00875A] flex items-center justify-center text-xs font-bold">3</span>
                 Image Grid
               </h2>
-              <p className="text-sm text-gray-500 ml-10">Add photos to display in the masonry grid at the bottom of the page.</p>
+              <p className="text-xs text-gray-500 ml-9">Add photos to display in the masonry grid at the bottom of the page.</p>
             </div>
-            <button type="button" onClick={addPhoto} className="flex items-center gap-2 text-sm font-bold bg-gray-900 text-white hover:bg-black px-4 py-2 rounded-xl transition-all">
-              <Plus size={16} /> Add Photo
+            <button type="button" onClick={addPhoto} className="flex items-center gap-1.5 text-xs font-bold bg-gray-900 text-white hover:bg-black px-3.5 py-2 rounded-xl transition-all">
+              <Plus size={15} /> Add Photo
             </button>
           </div>
           
-          <div className="space-y-4 ml-10">
+          <div className="space-y-3 ml-9">
             {photos.map((photo, index) => (
-              <div key={index} className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 text-gray-400">
-                  <ImageIcon size={20} />
+              <div key={index} className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 text-gray-400">
+                  <ImageIcon size={18} />
                 </div>
                 <input 
                   type="url" 
                   value={photo}
                   onChange={(e) => updatePhoto(index, e.target.value)}
-                  className="flex-1 bg-gray-50 px-5 py-3.5 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-[#FFC107] focus:bg-white transition-all text-gray-900 font-medium" 
+                  className="flex-1 bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium" 
                   placeholder={`https://example.com/photo-${index + 1}.jpg`} 
                 />
-                <button type="button" onClick={() => removePhoto(index)} className="p-3 mt-0.5 text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 rounded-xl transition-colors shrink-0">
-                  <Trash2 size={20} />
+                <button type="button" onClick={() => removePhoto(index)} className="p-2 text-gray-400 hover:text-red-500 bg-gray-50 hover:bg-red-50 rounded-xl transition-colors shrink-0">
+                  <Trash2 size={16} />
                 </button>
               </div>
             ))}
@@ -163,14 +163,14 @@ export default function NewLandingPage() {
         </div>
 
         {/* Floating Action Bar */}
-        <div className="fixed bottom-0 left-0 right-0 lg:left-[280px] p-4 bg-white/80 backdrop-blur-xl border-t border-gray-200/50 z-40 flex justify-end">
-          <div className="max-w-6xl w-full mx-auto flex justify-end">
-            <button disabled={loading} type="submit" className="flex items-center gap-2 bg-gradient-to-r from-[#FFC107] to-orange-400 hover:from-yellow-400 hover:to-orange-500 text-gray-950 font-black py-4 px-10 rounded-2xl transition-all shadow-[0_0_30px_-5px_rgba(255,193,7,0.5)] hover:shadow-[0_0_40px_-5px_rgba(255,193,7,0.6)] hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0">
+        <div className="fixed bottom-0 left-0 right-0 lg:left-[240px] p-4 bg-white/90 backdrop-blur-xl border-t border-gray-200/80 z-40 flex justify-end">
+          <div className="max-w-4xl w-full mx-auto flex justify-end">
+            <button disabled={loading} type="submit" className="flex items-center gap-2 bg-[#00875A] hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-sm shadow-[#00875A]/20 disabled:opacity-50 text-xs">
               {loading ? (
-                <span className="w-5 h-5 border-2 border-gray-950 border-t-transparent rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
               ) : (
                 <>
-                  <Save size={20} />
+                  <Save size={16} />
                   Launch Campaign
                 </>
               )}

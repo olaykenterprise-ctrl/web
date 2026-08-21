@@ -29,15 +29,38 @@ export default function CheckoutPage() {
   const shipping = 2500;
   const total = subtotal + shipping;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      clearCart();
-      router.push('/checkout/success');
-    }, 1500);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const firstName = formData.get("firstName") as string || "";
+      const lastName = formData.get("lastName") as string || "";
+      const email = formData.get("email") as string || "";
+      const phone = formData.get("phone") as string || "";
+      const address = formData.get("address") as string || "";
+      const city = formData.get("city") as string || "";
+      const state = formData.get("state") as string || "";
+
+      await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: `${firstName} ${lastName}`.trim() || "Valued Customer",
+          customerEmail: email,
+          customerPhone: phone,
+          shippingAddress: `${address}, ${city}, ${state}`.trim(),
+          amount: total,
+          items: cart.map(i => ({ name: i.name, quantity: i.quantity, price: i.price, image: i.image }))
+        })
+      });
+    } catch (err) {
+      console.error("Order submission error:", err);
+    }
+
+    clearCart();
+    router.push('/checkout/success');
   };
 
   return (
@@ -64,19 +87,19 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">First Name</label>
-                  <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="John" />
+                  <input required name="firstName" type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="John" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">Last Name</label>
-                  <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Doe" />
+                  <input required name="lastName" type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Doe" />
                 </div>
                 <div className="space-y-1 md:col-span-2">
                   <label className="text-sm font-medium text-gray-700">Email Address</label>
-                  <input required type="email" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="john@example.com" />
+                  <input required name="email" type="email" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="john@example.com" />
                 </div>
                 <div className="space-y-1 md:col-span-2">
                   <label className="text-sm font-medium text-gray-700">Phone Number</label>
-                  <input required type="tel" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="+234 800 000 0000" />
+                  <input required name="phone" type="tel" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="+234 800 000 0000" />
                 </div>
               </div>
             </div>
@@ -90,15 +113,15 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1 md:col-span-2">
                   <label className="text-sm font-medium text-gray-700">Street Address</label>
-                  <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="123 Main Street" />
+                  <input required name="address" type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="123 Main Street" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">City</label>
-                  <input required type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Lagos" />
+                  <input required name="city" type="text" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Lagos" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm font-medium text-gray-700">State</label>
-                  <select required className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white">
+                  <select required name="state" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white">
                     <option value="">Select State</option>
                     <option value="lagos">Lagos</option>
                     <option value="abuja">Abuja (FCT)</option>
