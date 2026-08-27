@@ -17,7 +17,7 @@ export async function NewArrivals() {
           <p className="text-gray-500 text-sm ml-8">Check out our latest products</p>
         </div>
 
-        <Link href="/new-arrivals" className="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+        <Link href="/" className="flex items-center gap-1 text-primary font-bold text-sm hover:underline">
           View All <ArrowRight size={16} />
         </Link>
       </div>

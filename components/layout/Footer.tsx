@@ -47,12 +47,12 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-1 pr-4">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="relative w-10 h-10 flex-shrink-0">
+              <div className="relative w-32 h-10 flex-shrink-0 bg-white rounded-lg p-1">
                 <Image
                   src="/logo.svg"
                   alt="OlaYKEnterprise Logo"
                   fill
-                  className="object-contain"
+                  className="object-contain p-1"
                 />
               </div>
             </Link>
@@ -72,10 +72,7 @@ export function Footer() {
             <h4 className="text-white font-semibold mb-4 text-sm">Quick Links</h4>
             <ul className="space-y-3 text-xs">
               <li><Link href="/about" className="hover:text-primary transition">About Us</Link></li>
-              <li><Link href="/shop" className="hover:text-primary transition">Shop All</Link></li>
-              <li><Link href="/deals" className="hover:text-primary transition">Deals</Link></li>
-              <li><Link href="/new-arrivals" className="hover:text-primary transition">New Arrivals</Link></li>
-              <li><Link href="/track-order" className="hover:text-primary transition">Track Order</Link></li>
+              <li><Link href="/" className="hover:text-primary transition">Home</Link></li>
             </ul>
           </div>
 
@@ -84,22 +81,6 @@ export function Footer() {
             <h4 className="text-white font-semibold mb-4 text-sm">Customer Care</h4>
             <ul className="space-y-3 text-xs">
               <li><Link href="/contact" className="hover:text-primary transition">Contact Us</Link></li>
-              <li><Link href="/faq" className="hover:text-primary transition">FAQ</Link></li>
-              <li><Link href="/shipping" className="hover:text-primary transition">Shipping & Delivery</Link></li>
-              <li><Link href="/returns" className="hover:text-primary transition">Returns & Refunds</Link></li>
-              <li><Link href="/terms" className="hover:text-primary transition">Terms & Conditions</Link></li>
-            </ul>
-          </div>
-
-          {/* Help & Support */}
-          <div>
-            <h4 className="text-white font-semibold mb-4 text-sm">Help & Support</h4>
-            <ul className="space-y-3 text-xs">
-              <li><Link href="/payment-methods" className="hover:text-primary transition">Payment Methods</Link></li>
-              <li><Link href="/privacy" className="hover:text-primary transition">Privacy Policy</Link></li>
-              <li><Link href="/warranty" className="hover:text-primary transition">Warranty Policy</Link></li>
-              <li><Link href="/how-to-order" className="hover:text-primary transition">How to Order</Link></li>
-              <li><Link href="/report-issue" className="hover:text-primary transition">Report an Issue</Link></li>
             </ul>
           </div>
 
@@ -134,7 +115,6 @@ export function Footer() {
 
         </div>
 
-        {/* Mobile Layout (Accordions) */}
         <div className="md:hidden flex flex-col gap-0 mb-8 divide-y divide-gray-800">
           <details className="group">
             <summary className="flex justify-between items-center font-semibold text-sm text-white py-4 cursor-pointer list-none">
@@ -145,8 +125,6 @@ export function Footer() {
             </summary>
             <ul className="text-xs text-gray-400 pb-4 space-y-3 px-2">
               <li><Link href="/contact">Contact Us</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href="/shipping">Shipping & Delivery</Link></li>
             </ul>
           </details>
 
@@ -159,21 +137,6 @@ export function Footer() {
             </summary>
             <ul className="text-xs text-gray-400 pb-4 space-y-3 px-2">
               <li><Link href="/about">Our Story</Link></li>
-              <li><Link href="/shop">Shop All</Link></li>
-            </ul>
-          </details>
-
-          <details className="group">
-            <summary className="flex justify-between items-center font-semibold text-sm text-white py-4 cursor-pointer list-none">
-              HELP & SUPPORT
-              <span className="transition group-open:rotate-180">
-                <ChevronDown size={16} />
-              </span>
-            </summary>
-            <ul className="text-xs text-gray-400 pb-4 space-y-3 px-2">
-              <li><Link href="/returns">Returns & Refunds</Link></li>
-              <li><Link href="/terms">Terms & Conditions</Link></li>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
             </ul>
           </details>
           

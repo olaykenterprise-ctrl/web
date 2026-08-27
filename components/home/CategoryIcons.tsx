@@ -1,45 +1,85 @@
+import Image from "next/image";
 import Link from "next/link";
-import { 
-  BatteryCharging, 
-  Magnet, 
-  Cable, 
-  Smartphone, 
-  Shield, 
-  Headphones, 
-  Camera, 
-  Lightbulb, 
-  Mic, 
-  Grid 
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export function CategoryIcons() {
   const categories = [
-    { name: "Powerbanks", icon: <BatteryCharging size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/powerbanks" },
-    { name: "Magnetic Powerbanks", icon: <Magnet size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/magnetic" },
-    { name: "Cables & Chargers", icon: <Cable size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/cables" },
-    { name: "Phone Holders", icon: <Smartphone size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/holders" },
-    { name: "Cases & Protection", icon: <Shield size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/cases" },
-    { name: "Audio & Earbuds", icon: <Headphones size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/audio" },
-    { name: "Tripods & Stands", icon: <Camera size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/tripods" },
-    { name: "Ring Lights", icon: <Lightbulb size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/ring-lights" },
-    { name: "Microphones", icon: <Mic size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/category/microphones" },
-    { name: "All Categories", icon: <Grid size={28} className="text-gray-600 group-hover:text-primary transition-colors" />, href: "/categories" },
+    {
+      name: "Fashion & Apparel",
+      slug: "fashion",
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+      name: "Home & Living",
+      slug: "home-living",
+      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+      name: "Beauty & Personal Care",
+      slug: "beauty",
+      image: "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+      name: "Electronics & Accessories",
+      slug: "powerbanks",
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+      name: "Health & Fitness",
+      slug: "fitness",
+      image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+      name: "Lifestyle",
+      slug: "lifestyle",
+      image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=600&auto=format&fit=crop",
+    },
   ];
 
   return (
-    <div className="container-custom mb-12">
-      <div className="flex overflow-x-auto hide-scrollbar gap-4 md:gap-8 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
-        {categories.map((category, index) => (
-          <Link key={index} href={category.href} className="group flex flex-col items-center gap-3 w-[80px] md:w-[100px] flex-shrink-0">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-purple-50 transition-colors border border-gray-100 group-hover:border-purple-200">
-              {category.icon}
+    <section id="categories" className="container-custom mb-14 sm:mb-20 scroll-mt-24">
+      {/* Section Header */}
+      <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+        <h2 className="font-editorial text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-2">
+          Shop by Category
+        </h2>
+        <p className="text-gray-500 text-sm sm:text-base">
+          Find everything you need, all in one place.
+        </p>
+      </div>
+
+      {/* Category Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-5">
+        {categories.map((category) => (
+          <Link
+            key={category.slug}
+            href={`/category/${category.slug}`}
+            className="group bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-xs hover:shadow-md hover:border-gray-300 transition-all flex flex-col"
+          >
+            {/* Category Photo */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+              <Image
+                src={category.image}
+                alt={category.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+              />
             </div>
-            <span className="text-[11px] md:text-xs text-center font-medium text-gray-700 group-hover:text-primary transition-colors leading-tight">
-              {category.name}
-            </span>
+
+            {/* Category Label */}
+            <div className="p-3 sm:p-3.5 flex items-center justify-between bg-white flex-1">
+              <span className="font-bold text-xs sm:text-[13px] text-gray-800 group-hover:text-primary transition-colors leading-tight line-clamp-1">
+                {category.name}
+              </span>
+              <ChevronRight
+                size={14}
+                className="text-gray-400 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0 ml-1"
+              />
+            </div>
           </Link>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

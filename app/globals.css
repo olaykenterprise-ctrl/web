@@ -1,21 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #581c87; /* Premium Purple */
+  --color-primary: #581c87; /* Royal Purple */
   --color-primary-dark: #3b0764;
   --color-primary-light: #7e22ce;
-  --color-accent: #eab308; /* Action Yellow */
-  --color-accent-dark: #ca8a04;
+  --color-accent: #f59e0b; /* Warm Gold / Action Amber */
+  --color-accent-dark: #d97706;
+  --color-warm-bg: #faf8f5; /* Warm luxury cream */
+  --color-mint-bg: #f2f8f4; /* Soft trust tint */
   
   --font-inter: var(--font-inter);
+  --font-serif: 'Playfair Display', Georgia, Cambria, 'Times New Roman', serif;
 }
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-white text-gray-900 antialiased;
     font-family: var(--font-inter), sans-serif;
   }
 }
+
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
 
 /* Base custom classes to match the design */
 .container-custom {

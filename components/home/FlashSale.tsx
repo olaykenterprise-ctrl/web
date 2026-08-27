@@ -36,7 +36,7 @@ export async function FlashSale() {
             </div>
           </div>
           
-          <Link href="/deals" className="hidden md:flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+          <Link href="/" className="hidden md:flex items-center gap-1 text-primary font-bold text-sm hover:underline">
             View All Deals <ArrowRight size={16} />
           </Link>
         </div>
@@ -48,7 +48,7 @@ export async function FlashSale() {
         ))}
       </div>
       
-      <Link href="/deals" className="md:hidden mt-6 flex items-center justify-center gap-1 text-white bg-gray-900 py-3 rounded-lg font-bold text-sm">
+      <Link href="/" className="md:hidden mt-6 flex items-center justify-center gap-1 text-white bg-gray-900 py-3 rounded-lg font-bold text-sm">
         View All Deals
       </Link>
     </div>

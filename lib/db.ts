@@ -128,6 +128,25 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
   return (data || []).map(mapProduct);
 }
 
+export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data || []).map(mapProduct);
+}
+
+export async function getAllProducts(): Promise<Product[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return (data || []).map(mapProduct);
+}
+
 export async function getLandingPageBySlug(slug: string): Promise<LandingPage | null> {
   const supabase = await createClient();
   const { data } = await supabase
@@ -138,3 +157,4 @@ export async function getLandingPageBySlug(slug: string): Promise<LandingPage | 
     
   return data ? mapLandingPage(data) : null;
 }
+

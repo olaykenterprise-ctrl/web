@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star, Check } from "lucide-react";
+import { Heart, ShoppingCart, Check } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/lib/store";
 import { Product } from "@/lib/db";
@@ -15,8 +15,9 @@ export function ProductCard(product: Product) {
     image,
     price,
     originalPrice,
-    rating,
-    reviews,
+    category,
+    isFlashSale,
+    isNewArrival,
     discountBadge,
   } = product;
 
@@ -33,89 +34,115 @@ export function ProductCard(product: Product) {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  // Determine appropriate badge
+  const renderBadge = () => {
+    if (isFlashSale) {
+      return (
+        <span className="bg-red-50 text-red-600 border border-red-200/60 text-[10px] font-bold px-2 py-0.5 rounded-md">
+          Hot Deal
+        </span>
+      );
+    }
+    if (isNewArrival) {
+      return (
+        <span className="bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-[10px] font-bold px-2 py-0.5 rounded-md">
+          New
+        </span>
+      );
+    }
+    if (discountBadge) {
+      return (
+        <span className="bg-accent/20 text-accent-dark border border-accent/40 text-[10px] font-bold px-2 py-0.5 rounded-md">
+          {discountBadge}
+        </span>
+      );
+    }
+    return (
+      <span className="bg-amber-50 text-amber-700 border border-amber-200/60 text-[10px] font-bold px-2 py-0.5 rounded-md">
+        Best Seller
+      </span>
+    );
+  };
+
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden flex flex-col h-full">
-      {/* Badges and Actions */}
-      <div className="absolute top-3 left-3 right-3 flex justify-between items-start z-10">
-        {discountBadge ? (
-          <span className="bg-accent text-primary-dark text-[10px] font-bold px-2 py-1 rounded-sm">
-            {discountBadge}
-          </span>
-        ) : (
-          <div></div>
-        )}
+    <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xs hover:shadow-md hover:border-gray-300 transition-all group flex flex-col h-full overflow-hidden relative">
+      
+      {/* Top Badges & Wishlist */}
+      <div className="p-3.5 pb-0 flex justify-between items-center z-10">
+        <div>{renderBadge()}</div>
         <button 
           onClick={() => toggleWishlist(product)}
-          className={`transition-colors bg-white rounded-full p-1.5 shadow-sm ${isWishlisted ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`}
+          className={`w-7 h-7 rounded-full bg-white/90 shadow-xs border border-gray-100 flex items-center justify-center transition-colors ${
+            isWishlisted ? "text-red-500" : "text-gray-400 hover:text-red-500"
+          }`}
+          aria-label="Add to wishlist"
         >
-          <Heart size={16} className={isWishlisted ? "fill-red-500" : ""} />
+          <Heart size={14} className={isWishlisted ? "fill-red-500" : ""} />
         </button>
       </div>
 
       {/* Product Image */}
-      <Link href={`/product/${slug}`} className="relative w-full aspect-square bg-gray-50 flex items-center justify-center p-6 block">
+      <Link 
+        href={`/product/${slug}`} 
+        className="relative w-full aspect-square bg-white flex items-center justify-center p-4"
+      >
         <div className="relative w-full h-full transform group-hover:scale-105 transition-transform duration-300">
           <Image
-            src={image}
+            src={image || "/placeholder.png"}
             alt={name}
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           />
         </div>
       </Link>
 
-      {/* Product Info */}
-      <div className="p-4 flex flex-col flex-grow">
+      {/* Product Details */}
+      <div className="p-4 pt-2 flex flex-col flex-grow bg-white border-t border-gray-50">
         <Link href={`/product/${slug}`} className="hover:text-primary transition-colors">
-          <h3 className="text-sm font-semibold text-gray-800 line-clamp-2 mb-2 min-h-[40px]">
+          <h3 className="text-xs sm:text-sm font-bold text-gray-900 line-clamp-1 mb-0.5">
             {name}
           </h3>
         </Link>
-        
-        <div className="mt-auto">
-          <div className="flex items-center gap-2 mb-1">
-            {originalPrice && (
-              <span className="text-[11px] text-gray-400 line-through">
-                ₦{originalPrice.toLocaleString()}
-              </span>
-            )}
-            <span className="text-base font-bold text-gray-900">
-              ₦{price.toLocaleString()}
+
+        <p className="text-[11px] text-gray-400 capitalize mb-2 font-medium">
+          {category ? category.replace("-", " ") : "Premium Gear"}
+        </p>
+
+        {/* Pricing */}
+        <div className="flex items-baseline gap-2 mb-3 mt-auto">
+          <span className="text-sm sm:text-base font-black text-gray-900">
+            ₦{price.toLocaleString()}
+          </span>
+          {originalPrice && originalPrice > price && (
+            <span className="text-[11px] text-gray-400 line-through">
+              ₦{originalPrice.toLocaleString()}
             </span>
-          </div>
-
-          <div className="flex items-center gap-1 mb-4">
-            <div className="flex text-yellow-400">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={12}
-                  className={i < Math.floor(rating) ? "fill-yellow-400" : "fill-gray-200 text-gray-200"}
-                />
-              ))}
-            </div>
-            <span className="text-[10px] text-gray-500">({reviews})</span>
-          </div>
-
-          <button 
-            onClick={handleAddToCart}
-            disabled={added}
-            className={`w-full py-2 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2
-              ${added 
-                ? 'bg-green-500 text-white' 
-                : 'bg-accent text-primary-dark hover:bg-accent-dark hover:text-white hover:scale-[1.02]'
-              }`}
-          >
-            {added ? (
-              <>
-                <Check size={16} /> Added
-              </>
-            ) : (
-              'Add to Cart'
-            )}
-          </button>
+          )}
         </div>
+
+        {/* Add to Cart CTA */}
+        <button 
+          onClick={handleAddToCart}
+          disabled={added}
+          className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 flex items-center justify-center gap-1.5 shadow-xs ${
+            added
+              ? "bg-emerald-600 text-white"
+              : "bg-primary hover:bg-primary-dark text-white hover:-translate-y-0.5"
+          }`}
+        >
+          {added ? (
+            <>
+              <Check size={14} />
+              <span>Added to Cart</span>
+            </>
+          ) : (
+            <>
+              <ShoppingCart size={14} />
+              <span>Add to Cart</span>
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

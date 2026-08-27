@@ -75,7 +75,7 @@ export function ClientAdminLayout({
     { name: "Settings", href: "/adminola/settings", icon: Settings },
   ];
 
-  const SidebarContent = () => (
+  const sidebarContent = (
     <div className="flex flex-col h-full justify-between text-gray-300">
       <div>
         {/* Brand Logo Header */}
@@ -173,7 +173,7 @@ export function ClientAdminLayout({
     <div className="min-h-screen bg-[#F4F7FB] flex font-sans antialiased text-gray-900">
       {/* Desktop Sidebar (Dark Navy #0B1320) */}
       <aside className="w-[240px] bg-[#0B1320] flex-col hidden lg:flex flex-shrink-0 border-r border-gray-900/50 shadow-xl z-20">
-        <SidebarContent />
+        {sidebarContent}
       </aside>
 
       {/* Mobile Sidebar Overlay */}
@@ -198,7 +198,7 @@ export function ClientAdminLayout({
             <X size={22} />
           </button>
         </div>
-        <SidebarContent />
+        {sidebarContent}
       </aside>
 
       {/* Main App Layout */}
