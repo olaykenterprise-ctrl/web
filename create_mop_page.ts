@@ -11,7 +11,10 @@ async function run() {
     {
       id: "headline-1",
       type: "headline",
-      data: { text: "The Ultimate Self-Cleaning Flat Mop System" }
+      data: { 
+        text: "The Ultimate Self-Cleaning Flat Mop System",
+        backgroundImage: "/uploads/mop-hero.jpg"
+      }
     },
     {
       id: "subheadline-1",
@@ -63,13 +66,15 @@ async function run() {
 
   const wrapperJson = JSON.stringify({ category: "home-appliances", blocks });
 
-  const { error } = await supabase.from("landing_pages").insert({
-    slug: "self-cleaning-flat-mop",
-    title: "Self-Cleaning Flat Mop System",
-    subheading: "Say goodbye to dirty hands and wet floors.",
-    body_list: [wrapperJson],
-    photos: []
-  });
+  const { error } = await supabase.from("landing_pages")
+    .update({
+      title: "Self-Cleaning Flat Mop System",
+      subheading: "Say goodbye to dirty hands and wet floors.",
+      video_link: "",
+      cta_link: "#checkout-form",
+      body_list: [wrapperJson] // The new wrapper format
+    })
+    .eq("slug", "self-cleaning-flat-mop");
 
   if (error) {
     console.error("Error creating landing page:", error);

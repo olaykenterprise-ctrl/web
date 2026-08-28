@@ -163,13 +163,24 @@ function BlockIcon({ type }: { type: BlockType }) {
 function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: any) => void }) {
   if (block.type === 'headline' || block.type === 'subheadline') {
     return (
-      <input 
-        type="text" 
-        value={block.data.text} 
-        onChange={(e) => onChange({ text: e.target.value })}
-        className={`w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium ${block.type === 'headline' ? 'text-xl' : 'text-lg'}`}
-        placeholder={`Enter ${block.type}...`}
-      />
+      <div className="space-y-3">
+        <input 
+          type="text" 
+          value={block.data.text || ''} 
+          onChange={(e) => onChange({ ...block.data, text: e.target.value })}
+          className={`w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium ${block.type === 'headline' ? 'text-xl' : 'text-lg'}`}
+          placeholder={`Enter ${block.type}...`}
+        />
+        {block.type === 'headline' && (
+          <input 
+            type="text" 
+            value={block.data.backgroundImage || ''} 
+            onChange={(e) => onChange({ ...block.data, backgroundImage: e.target.value })}
+            className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
+            placeholder="Optional Background Image URL for Hero section..."
+          />
+        )}
+      </div>
     );
   }
 
