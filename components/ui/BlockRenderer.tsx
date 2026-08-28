@@ -1,187 +1,128 @@
 "use client";
 import Image from "next/image";
 import { PageBlock } from "@/lib/db";
-import { CheckCircle2, ShoppingCart, Droplets, RotateCw, Hand, Zap, Leaf } from "lucide-react";
-import { useState, useEffect } from "react";
+import { CheckCircle2, ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
 export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | null }) {
   if (!blocks || blocks.length === 0) return null;
 
-  // Separate blocks into logical sections based on the requested template
-  const headlineBlock = blocks.find(b => b.type === 'headline');
-  const subheadlineBlock = blocks.find(b => b.type === 'subheadline');
-  const buttonBlock = blocks.find(b => b.type === 'button');
-  const imageBlock = blocks.find(b => b.type === 'image' || b.type === 'carousel');
-  const bodyBlock = blocks.find(b => b.type === 'body');
-  const listBlock = blocks.find(b => b.type === 'list');
-  const formBlock = blocks.find(b => b.type === 'form');
-
   return (
     <div className="w-full bg-white font-sans">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative w-full min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden bg-[#e6f0fa]">
-        {/* Hero Background Image (using the provided hero image) */}
-        <div className="absolute inset-0 z-0">
-          <Image 
-            src="/uploads/mop-hero.jpg" 
-            alt="Hero Background" 
-            fill 
-            className="object-cover object-right md:object-center opacity-90 mix-blend-multiply"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent w-full md:w-2/3"></div>
-        </div>
+      {blocks.map((block, index) => {
+        // Render each block as a distinct section based on its type
+        
+        if (block.type === 'headline') {
+          return (
+            <section key={block.id} className="relative w-full py-16 md:py-24 flex items-center overflow-hidden bg-[#e6f0fa] border-b border-blue-50">
+              <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#001D4A] leading-[1.1] tracking-tight drop-shadow-sm max-w-4xl mx-auto">
+                  {block.data.text}
+                </h1>
+              </div>
+            </section>
+          );
+        }
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-12 md:py-24">
-          <div className="max-w-xl md:max-w-2xl">
-            {headlineBlock && (
-              <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-black text-[#001D4A] leading-[1.05] tracking-tight mb-6 drop-shadow-sm">
-                {headlineBlock.data.text}
-              </h1>
-            )}
-            {subheadlineBlock && (
-              <p className="text-xl md:text-2xl text-gray-800 font-medium mb-10 leading-snug max-w-lg">
-                {subheadlineBlock.data.text}
-              </p>
-            )}
-            {buttonBlock && (
+        if (block.type === 'subheadline') {
+          return (
+            <section key={block.id} className="w-full py-6 bg-white">
+              <div className="max-w-4xl mx-auto px-6 text-center">
+                <p className="text-xl md:text-2xl text-gray-700 font-medium leading-relaxed">
+                  {block.data.text}
+                </p>
+              </div>
+            </section>
+          );
+        }
+
+        if (block.type === 'button') {
+          return (
+            <section key={block.id} className="w-full py-8 bg-white text-center">
               <a 
-                href={buttonBlock.data.link || "#checkout-form"}
-                className="inline-flex items-center justify-center gap-2 bg-[#003399] hover:bg-[#002266] text-white font-black text-xl py-5 px-12 rounded-full transition-all shadow-2xl hover:scale-105"
+                href={block.data.link || "#checkout-form"}
+                className="inline-flex items-center justify-center gap-2 bg-[#003399] hover:bg-[#002266] text-white font-black text-xl py-5 px-12 rounded-full transition-all shadow-xl hover:scale-105"
               >
-                {buttonBlock.data.label || "BUY NOW"}
+                {block.data.label || "BUY NOW"}
                 <span className="text-2xl ml-2 leading-none">&rsaquo;</span>
               </a>
-            )}
-          </div>
-        </div>
-      </section>
+            </section>
+          );
+        }
 
-      {/* 2. CAROUSEL SECTION */}
-      {imageBlock && imageBlock.data.urls && (
-        <section className="py-10 bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar justify-start md:justify-center">
-              {imageBlock.data.urls.map((img: string, i: number) => (
-                <div key={i} className="relative shrink-0 w-[240px] h-[180px] md:w-[280px] md:h-[200px] snap-center rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 shadow-sm group">
-                  <Image 
-                    src={img} 
-                    alt={`Gallery ${i}`} 
-                    fill 
-                    className="object-cover group-hover:scale-110 transition-transform duration-700" 
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 3. INFO SECTION (A Smarter Way to Clean) */}
-      {(bodyBlock || listBlock) && (
-        <section className="py-16 md:py-24 bg-gradient-to-b from-white to-[#f0f7ff]">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-4xl md:text-5xl font-black text-[#001D4A] mb-8">A Smarter Way to Clean</h2>
-                {bodyBlock && (
-                  <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium mb-8">
-                    {bodyBlock.data.text}
-                  </p>
-                )}
-                {listBlock && (
-                  <div className="bg-white rounded-3xl p-8 shadow-xl shadow-blue-900/5 border border-blue-50">
-                    <ul className="space-y-4">
-                      {(listBlock.data.items || []).map((item: string, i: number) => (
-                        <li key={i} className="flex gap-4 items-start">
-                          <CheckCircle2 size={24} className="text-[#003399] shrink-0 mt-0.5" />
-                          <span className="text-gray-800 text-lg font-bold leading-relaxed">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              
-              {/* If we have a lot of images, let's just pick one to show big on the right, or use the hero image again */}
-              <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
-                 <Image 
-                    src="/uploads/mop3.jpg" 
-                    alt="Product Demonstration" 
-                    fill 
-                    className="object-cover" 
-                  />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 4. KEY BENEFITS ROW */}
-      <section className="py-12 bg-white border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center gap-4 mb-8">
-             <div className="bg-[#003399] text-white px-6 py-2 rounded-r-full -ml-6 font-bold text-lg shadow-md">
-               Key Benefits
-             </div>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-            <BenefitIcon icon={<RotateCw />} title="Self-Cleaning" subtitle="Scrapes & rinses pads automatically" />
-            <BenefitIcon icon={<Droplets />} title="Multiple Uses" subtitle="Reusable microfiber pads" />
-            <BenefitIcon icon={<Hand />} title="Touch-Less" subtitle="No dirty hands" />
-            <BenefitIcon icon={<Zap />} title="Faster Drying" subtitle="Leaves floors clean & dry" />
-            <BenefitIcon icon={<Leaf />} title="Eco-Friendly" subtitle="Less waste, longer use" />
-          </div>
-        </div>
-      </section>
-
-      {/* 5. FOOTER / CHECKOUT SECTION */}
-      {formBlock && (
-        <section className="py-16 bg-[#e6f0fa]">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="grid md:grid-cols-2 gap-8 items-stretch">
-              {/* Left Dark Card */}
-              <div className="bg-[#001D4A] rounded-[2rem] p-10 md:p-14 text-white relative overflow-hidden flex flex-col justify-center shadow-2xl">
-                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20 -mr-20 -mt-20"></div>
-                 
-                 <div className="relative z-10">
-                   <p className="text-blue-300 font-bold text-xl mb-2">Get Your</p>
-                   <h2 className="text-4xl md:text-5xl font-black mb-10 leading-tight">
-                     {formBlock.data.productName} <br/><span className="text-white">Today!</span>
-                   </h2>
-                   
-                   <ul className="space-y-4">
-                     <li className="flex items-center gap-3 text-xl font-medium"><CheckCircle2 className="text-[#00E676]" /> Cleaner Floors</li>
-                     <li className="flex items-center gap-3 text-xl font-medium"><CheckCircle2 className="text-[#00E676]" /> Healthier Home</li>
-                     <li className="flex items-center gap-3 text-xl font-medium"><CheckCircle2 className="text-[#00E676]" /> Hassle-Free Cleaning</li>
-                     <li className="flex items-center gap-3 text-xl font-medium"><CheckCircle2 className="text-[#00E676]" /> Long-Lasting Value</li>
-                   </ul>
+        if (block.type === 'image' || block.type === 'carousel') {
+           if (block.data.urls && block.data.urls.length === 1) {
+             return (
+               <section key={block.id} className="w-full py-12 bg-gray-50">
+                 <div className="max-w-5xl mx-auto px-6">
+                   <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white">
+                     <Image src={block.data.urls[0]} alt="Image" fill className="object-cover" />
+                   </div>
                  </div>
+               </section>
+             )
+           } else if (block.data.urls && block.data.urls.length > 1) {
+             return (
+               <section key={block.id} className="w-full py-12 bg-white">
+                 <div className="max-w-7xl mx-auto px-4">
+                   <div className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar justify-start md:justify-center">
+                     {block.data.urls.map((img: string, i: number) => (
+                       <div key={i} className="relative shrink-0 w-[240px] h-[180px] md:w-[280px] md:h-[200px] snap-center rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 shadow-sm group">
+                         <Image src={img} alt={`Gallery ${i}`} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                       </div>
+                     ))}
+                   </div>
+                 </div>
+               </section>
+             )
+           }
+        }
+
+        if (block.type === 'body') {
+          return (
+            <section key={block.id} className="w-full py-12 bg-white">
+              <div className="max-w-4xl mx-auto px-6">
+                <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
+                  {block.data.text}
+                </p>
               </div>
+            </section>
+          );
+        }
 
-              {/* Right Form Card */}
-              <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100">
-                <CheckoutFormBlock block={formBlock} />
+        if (block.type === 'list') {
+          return (
+            <section key={block.id} className="w-full py-12 bg-[#f0f7ff]">
+              <div className="max-w-4xl mx-auto px-6">
+                <div className="bg-white rounded-[2rem] p-8 md:p-12 shadow-xl shadow-blue-900/5 border border-blue-50">
+                  <ul className="space-y-6">
+                    {(block.data.items || []).map((item: string, i: number) => (
+                      <li key={i} className="flex gap-5 items-start">
+                        <CheckCircle2 size={28} className="text-[#003399] shrink-0 mt-0.5" />
+                        <span className="text-gray-800 text-xl font-bold leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
-      )}
+            </section>
+          );
+        }
 
-    </div>
-  );
-}
+        if (block.type === 'form') {
+          return (
+            <section key={block.id} className="w-full py-16 bg-[#e6f0fa]">
+              <div className="max-w-3xl mx-auto px-6">
+                <div className="bg-white rounded-[2rem] shadow-2xl overflow-hidden border border-gray-100">
+                  <CheckoutFormBlock block={block} />
+                </div>
+              </div>
+            </section>
+          );
+        }
 
-function BenefitIcon({ icon, title, subtitle }: { icon: React.ReactNode, title: string, subtitle: string }) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-[#003399] mb-4">
-        {icon}
-      </div>
-      <h4 className="font-black text-gray-900 mb-1">{title}</h4>
-      <p className="text-sm text-gray-500 leading-snug">{subtitle}</p>
+        return null;
+      })}
     </div>
   );
 }
@@ -241,13 +182,13 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   }
 
   return (
-    <div id="checkout-form" className="p-8 md:p-10">
-      <div className="flex items-center gap-3 mb-8">
-        <ShoppingCart className="text-[#003399]" size={28} />
-        <h3 className="text-2xl font-black text-[#001D4A]">Order Now</h3>
+    <div id="checkout-form" className="p-8 md:p-12">
+      <div className="text-center mb-8">
+        <h3 className="text-3xl font-black text-[#001D4A] mb-3">Order Now</h3>
+        <p className="text-gray-600">{block.data.productName}</p>
       </div>
       
-      <div className="bg-[#e6f0fa] text-[#003399] font-bold text-center py-3 rounded-xl mb-8 flex justify-center items-center gap-2">
+      <div className="bg-[#e6f0fa] text-[#003399] font-bold text-center py-4 rounded-xl mb-8 flex justify-center items-center gap-2 text-xl">
         <span>🔒</span> ₦{price.toLocaleString()} <span className="text-sm font-medium opacity-80">(Price Locked)</span>
       </div>
 
@@ -273,15 +214,15 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           </div>
         </div>
         
-        <div className="space-y-1.5 w-32">
+        <div className="space-y-1.5 w-full">
           <label className="text-xs font-bold text-gray-600 uppercase">Quantity</label>
           <div className="relative">
             <select required name="quantity" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#003399]/20 focus:border-[#003399] transition-all bg-gray-50 appearance-none font-bold text-center">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+              <option value="1">1 piece</option>
+              <option value="2">2 pieces</option>
+              <option value="3">3 pieces</option>
+              <option value="4">4 pieces</option>
+              <option value="5">5 pieces</option>
             </select>
           </div>
         </div>
@@ -289,7 +230,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
         <button 
           type="submit" 
           disabled={loading}
-          className="w-full mt-4 bg-[#001D4A] hover:bg-[#001133] text-white font-black text-lg py-5 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-blue-900/20 flex items-center justify-center gap-2"
+          className="w-full mt-4 bg-[#001D4A] hover:bg-[#001133] text-white font-black text-xl py-5 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-blue-900/20 flex items-center justify-center gap-2"
         >
           {loading ? "Processing..." : (
             <>
@@ -297,8 +238,8 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
             </>
           )}
         </button>
-        <p className="text-center text-xs text-gray-500 font-medium pt-2">
-          <CheckCircle2 size={12} className="inline mr-1 text-green-500" /> Your information is safe and secure.
+        <p className="text-center text-xs text-gray-500 font-medium pt-3">
+          <CheckCircle2 size={14} className="inline mr-1 text-green-500" /> Your information is safe and secure.
         </p>
       </form>
     </div>
