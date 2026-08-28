@@ -51,6 +51,7 @@ export function Navbar() {
     { name: "Cables & Chargers", slug: "cables" },
     { name: "Phone Accessories", slug: "phone-accessories" },
     { name: "Content Creation Tools", slug: "content-creation" },
+    { name: "Home Appliances & Equipment", slug: "home-appliances" },
   ];
 
   return (

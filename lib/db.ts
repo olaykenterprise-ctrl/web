@@ -1,5 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
 
+export type BlockType = 'headline' | 'subheadline' | 'body' | 'image' | 'carousel' | 'list' | 'video' | 'button' | 'form';
+
+export interface PageBlock {
+  id: string;
+  type: BlockType;
+  data: any;
+}
+
 export type Product = {
   id: string;
   name: string;
@@ -21,7 +29,7 @@ export type Product = {
   soldCount?: number;
   variants?: any[];
   keyFeatures?: any[];
-  richContent?: any;
+  richContent?: PageBlock[]; // Used for block builder
   whatsInTheBox?: string[];
   specifications?: any;
 };
@@ -31,8 +39,10 @@ export type LandingPage = {
   slug: string;
   title: string;
   subheading: string;
-  bodyList: string[];
-  photos: string[];
+  bodyList: string[]; // Legacy
+  photos: string[]; // Legacy
+  blocks?: PageBlock[]; // New block builder
+  category?: string; // New category field
   videoLink?: string;
   ctaLink?: string;
   createdAt: string;
@@ -65,13 +75,35 @@ function mapProduct(data: any): Product {
 }
 
 function mapLandingPage(data: any): LandingPage {
+  let blocks: PageBlock[] = [];
+  let category: string | undefined = undefined;
+  let isLegacy = true;
+  try {
+    // We will store stringified JSON blocks in the first element of body_list if it starts with '[' or '{'
+    if (data.body_list && data.body_list.length > 0) {
+      if (data.body_list[0].startsWith('[')) {
+        blocks = JSON.parse(data.body_list[0]);
+        isLegacy = false;
+      } else if (data.body_list[0].startsWith('{')) {
+        const parsed = JSON.parse(data.body_list[0]);
+        blocks = parsed.blocks || [];
+        category = parsed.category;
+        isLegacy = false;
+      }
+    }
+  } catch (e) {
+    console.error("Failed to parse landing page blocks", e);
+  }
+
   return {
     id: data.id,
     slug: data.slug,
     title: data.title,
     subheading: data.subheading,
-    bodyList: data.body_list,
-    photos: data.photos,
+    bodyList: isLegacy ? data.body_list : [],
+    photos: isLegacy ? data.photos : [],
+    blocks,
+    category,
     videoLink: data.video_link,
     ctaLink: data.cta_link,
     createdAt: data.created_at,

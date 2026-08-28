@@ -18,7 +18,8 @@ import {
   Bell,
   ChevronDown,
   LogOut,
-  Store
+  Store,
+  LayoutTemplate
 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useState, useEffect } from "react";
@@ -68,6 +69,7 @@ export function ClientAdminLayout({
     { name: "Dashboard", href: "/adminola", icon: LayoutDashboard },
     { name: "Orders", href: "/adminola/orders", icon: ShoppingCart, badge: pendingOrdersCount > 0 ? pendingOrdersCount.toString() : undefined },
     { name: "Products", href: "/adminola/products", icon: Package },
+    { name: "Landing Pages", href: "/adminola/landing-pages", icon: LayoutTemplate },
     { name: "Customers", href: "/adminola/customers", icon: Users },
     { name: "Analytics", href: "/adminola/analytics", icon: BarChart3 },
     { name: "Marketing", href: "/adminola/marketing", icon: Megaphone },

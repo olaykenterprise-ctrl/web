@@ -11,9 +11,16 @@ export async function createLandingPage(formData: FormData) {
   const subheading = formData.get("subheading") as string;
   const video_link = formData.get("video_link") as string;
   const cta_link = formData.get("cta_link") as string;
+  const category = formData.get("category") as string;
   
-  const body_list = formData.getAll("body_list") as string[];
-  const photos = formData.getAll("photos") as string[];
+  // Get stringified blocks JSON
+  const blocksJson = formData.get("blocks") as string || "[]";
+  const blocks = JSON.parse(blocksJson);
+  
+  // Store blocks and category in body_list to avoid requiring a schema migration
+  const wrapperJson = JSON.stringify({ category, blocks });
+  const body_list = [wrapperJson];
+  const photos = [] as string[];
   
   // Auto-generate slug from title
   const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");

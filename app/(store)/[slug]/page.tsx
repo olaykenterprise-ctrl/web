@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, Play, ShoppingCart } from "lucide-react";
+import { BlockRenderer } from "@/components/ui/BlockRenderer";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -71,35 +72,44 @@ export default async function LandingPage({ params }: { params: Promise<{ slug: 
         )}
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Features / Body List */}
-          {Array.isArray(page.bodyList) && page.bodyList.length > 0 && (
-            <section className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100">
-              <h2 className="text-2xl font-black text-gray-900 mb-6">Why You Need This</h2>
-              <ul className="space-y-4">
-                {page.bodyList.map((item, index) => (
-                  <li key={index} className="flex gap-4 items-start">
-                    <CheckCircle2 className="text-primary shrink-0 mt-1" size={24} />
-                    <span className="text-gray-700 text-lg leading-relaxed font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+          {/* Block Builder Content (New format) */}
+          {page.blocks && page.blocks.length > 0 ? (
+            <div className="md:col-span-2">
+              <BlockRenderer blocks={page.blocks} />
+            </div>
+          ) : (
+            <>
+              {/* Features / Body List (Legacy format) */}
+              {Array.isArray(page.bodyList) && page.bodyList.length > 0 && (
+                <section className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100">
+                  <h2 className="text-2xl font-black text-gray-900 mb-6">Why You Need This</h2>
+                  <ul className="space-y-4">
+                    {page.bodyList.map((item, index) => (
+                      <li key={index} className="flex gap-4 items-start">
+                        <CheckCircle2 className="text-primary shrink-0 mt-1" size={24} />
+                        <span className="text-gray-700 text-lg leading-relaxed font-medium">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
 
-          {/* Photo Gallery */}
-          {Array.isArray(page.photos) && page.photos.length > 0 && (
-            <section className="grid grid-cols-2 gap-4">
-              {page.photos.map((photo, index) => (
-                <div key={index} className={`relative rounded-3xl overflow-hidden shadow-sm bg-gray-200 border-4 border-white ${index === 0 && page.photos.length % 2 !== 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
-                  <Image
-                    src={photo}
-                    alt={`${page.title} - Image ${index + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              ))}
-            </section>
+              {/* Photo Gallery (Legacy format) */}
+              {Array.isArray(page.photos) && page.photos.length > 0 && (
+                <section className="grid grid-cols-2 gap-4">
+                  {page.photos.map((photo, index) => (
+                    <div key={index} className={`relative rounded-3xl overflow-hidden shadow-sm bg-gray-200 border-4 border-white ${index === 0 && page.photos.length % 2 !== 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}>
+                      <Image
+                        src={photo}
+                        alt={`${page.title} - Image ${index + 1}`}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  ))}
+                </section>
+              )}
+            </>
           )}
         </div>
       </div>

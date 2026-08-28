@@ -1,0 +1,14 @@
+- `[x]` 1. Database Updates
+  - `[x]` Add `blocks` JSONB column to `products` table
+  - `[x]` Add `blocks` JSONB column to `landing_pages` table
+  - `[x]` Update Types in `lib/db.ts`
+- `[x]` 2. Admin Interface
+  - `[x]` Create `components/admin/BlockBuilder.tsx`
+  - `[x]` Integrate into `app/adminola/landing-pages/new/page.tsx`
+  - `[x]` Integrate into `app/adminola/products/new/page.tsx`
+- `[x]` 3. Storefront Renderer
+  - `[x]` Create `components/ui/BlockRenderer.tsx`
+  - `[x]` Update `app/(store)/[slug]/page.tsx` (Landing Pages)
+  - `[x]` Update `app/(store)/product/[slug]/ProductClient.tsx` (Product Pages)
+- `[x]` 4. Build and Verify
+  - `[x]` Run `npm run build` locally

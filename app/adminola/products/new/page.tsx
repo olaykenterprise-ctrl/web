@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Save, Plus, Trash2, Image as ImageIcon } from "lucide-react";
 import { createProduct } from "./actions";
+import { BlockBuilder } from "@/components/admin/BlockBuilder";
 
 export default function NewProductPage() {
   const [gallery, setGallery] = useState([""]);
@@ -70,9 +71,10 @@ export default function NewProductPage() {
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Category</label>
                 <select name="category" required className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium">
                   <option value="powerbanks">Powerbanks</option>
-                  <option value="cables">Cables</option>
-                  <option value="content-creation">Content Creation</option>
+                  <option value="cables">Cables & Chargers</option>
+                  <option value="content-creation">Content Creation Tools</option>
                   <option value="phone-accessories">Phone Accessories</option>
+                  <option value="home-appliances">Home Appliances & Equipment</option>
                 </select>
               </div>
             </div>
@@ -158,6 +160,21 @@ export default function NewProductPage() {
               <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block mb-1">Discount Badge Text <span className="font-normal normal-case text-gray-400">(Optional)</span></label>
               <input type="text" name="discount_badge" className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-gray-900 text-xs font-medium" placeholder="e.g. -20%" />
             </div>
+          </div>
+        </div>
+
+        {/* Rich Content Builder */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+          <div className="mb-6">
+            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-1">
+              <span className="w-7 h-7 rounded-full bg-emerald-50 text-[#00875A] flex items-center justify-center text-xs font-bold">4</span>
+              Rich Content Builder
+            </h2>
+            <p className="text-xs text-gray-500 ml-9">Design a highly engaging rich content section for this product page.</p>
+          </div>
+          
+          <div className="ml-9">
+            <BlockBuilder fieldName="blocks" />
           </div>
         </div>
 

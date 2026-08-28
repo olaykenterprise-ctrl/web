@@ -10,6 +10,7 @@ import {
   Magnet, Monitor, ChevronDown, Check
 } from "lucide-react";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { BlockRenderer } from "@/components/ui/BlockRenderer";
 import { useShopStore } from "@/lib/store";
 import { fbEvent } from "@/components/FacebookPixel";
 
@@ -290,20 +291,27 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
             </div>
           )}
 
-          {/* Rich Content Banner */}
-          {product.richContent && Object.keys(product.richContent).length > 0 && product.richContent.audiences && (
+          {/* Block Builder Content (New format) */}
+          {Array.isArray(product.richContent) && product.richContent.length > 0 && (
+            <div className="py-12 border-t border-gray-100 mt-12 mb-12">
+              <BlockRenderer blocks={product.richContent} />
+            </div>
+          )}
+
+          {/* Rich Content Banner (Legacy format) */}
+          {!Array.isArray(product.richContent) && product.richContent && Object.keys(product.richContent).length > 0 && (product.richContent as any).audiences && (
             <div className="bg-gray-100 rounded-3xl overflow-hidden relative min-h-[400px] flex items-center">
-              <Image src={product.richContent.image} alt={product.richContent.heading} fill className="object-cover" />
+              <Image src={(product.richContent as any).image} alt={(product.richContent as any).heading} fill className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-gray-50/90 to-transparent"></div>
               <div className="relative z-10 p-8 md:p-16 max-w-xl">
                 <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-4 leading-tight tracking-tight">
-                  {product.richContent.heading}
+                  {(product.richContent as any).heading}
                 </h2>
                 <p className="text-lg text-gray-700 mb-8 font-medium">
-                  {product.richContent.subheading}
+                  {(product.richContent as any).subheading}
                 </p>
                 <div className="flex gap-6">
-                  {product.richContent.audiences.map((aud: any, i: number) => (
+                  {(product.richContent as any).audiences.map((aud: any, i: number) => (
                     <div key={i} className="flex flex-col items-center gap-2">
                       <div className="w-12 h-12 rounded-full border border-gray-200 bg-white/50 backdrop-blur flex items-center justify-center">
                         <CheckCircle2 size={20} className="text-gray-700" />

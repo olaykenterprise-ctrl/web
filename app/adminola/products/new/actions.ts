@@ -23,6 +23,17 @@ export async function createProduct(formData: FormData) {
   // Auto-generate slug from name
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
 
+  // Parse blocks if they exist
+  const blocksJson = formData.get("blocks") as string;
+  let rich_content = null;
+  if (blocksJson) {
+    try {
+      rich_content = JSON.parse(blocksJson);
+    } catch (e) {
+      console.error("Failed to parse blocks", e);
+    }
+  }
+
   const { error } = await supabase.from("products").insert({
     name,
     slug,
@@ -34,7 +45,8 @@ export async function createProduct(formData: FormData) {
     is_flash_sale,
     is_new_arrival,
     discount_badge: discount_badge || null,
-    gallery_images
+    gallery_images,
+    rich_content
   });
 
   if (error) {
