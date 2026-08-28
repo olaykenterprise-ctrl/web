@@ -60,7 +60,17 @@ async function run() {
     {
       id: "form-1",
       type: "form",
-      data: { productName: "Self-Cleaning Flat Mop System", price: 25000 }
+      data: { 
+        productName: "Self-Cleaning Flat Mop System", 
+        originalPrice: 30000,
+        price: 25000,
+        options: [
+          { label: "1 Mop + Bucket - N25,000", quantity: 1, price: 25000 },
+          { label: "2 Mops + Bucket - N40,000(Enjoy 20% Off)", quantity: 2, price: 40000 },
+          { label: "3 Mops + Bucket - N60,000(Enjoy 20% Off)", quantity: 3, price: 60000 },
+          { label: "More than 3 (Custom Request)", quantity: 4, price: 80000 }
+        ]
+      }
     }
   ];
 

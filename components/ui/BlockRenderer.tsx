@@ -1,43 +1,45 @@
 "use client";
 import Image from "next/image";
 import { PageBlock } from "@/lib/db";
-import { CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight, ArrowRight, ShieldCheck } from "lucide-react";
 import { useState, useRef } from "react";
 
 export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | null }) {
   if (!blocks || blocks.length === 0) return null;
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white pb-20">
       {blocks.map((block, index) => {
         
         if (block.type === 'headline') {
           return (
-            <section key={block.id} className="relative w-full py-16 md:py-24 flex items-center overflow-hidden bg-primary/10 border-b border-primary/20">
-              {block.data.backgroundImage && (
-                <div className="absolute inset-0 z-0">
-                  <Image 
-                    src={block.data.backgroundImage} 
-                    alt="Hero Background" 
-                    fill 
-                    className="object-cover opacity-90 mix-blend-multiply"
-                    priority={index === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent w-full"></div>
+            <div key={block.id} className="container-custom mt-3 sm:mt-6 mb-8 sm:mb-12">
+              <div className="relative bg-[#FAF8F5] rounded-3xl overflow-hidden border border-gray-100/80 shadow-xs flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px]">
+                {block.data.backgroundImage && (
+                  <div className="absolute inset-0 z-0">
+                    <Image 
+                      src={block.data.backgroundImage} 
+                      alt="Hero Background" 
+                      fill 
+                      className="object-cover opacity-80 mix-blend-multiply"
+                      priority={index === 0}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#FAF8F5] via-transparent to-transparent w-full"></div>
+                  </div>
+                )}
+                <div className="relative z-10 max-w-4xl mx-auto px-6 w-full text-center py-16">
+                  <h1 className="font-editorial text-4xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1] tracking-tight drop-shadow-sm">
+                    {block.data.text}
+                  </h1>
                 </div>
-              )}
-              <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight drop-shadow-sm max-w-4xl mx-auto">
-                  {block.data.text}
-                </h1>
               </div>
-            </section>
+            </div>
           );
         }
 
         if (block.type === 'subheadline') {
           return (
-            <section key={block.id} className="w-full py-6 bg-white">
+            <section key={block.id} className="w-full py-4">
               <div className="max-w-4xl mx-auto px-6 text-center">
                 <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed">
                   {block.data.text}
@@ -49,13 +51,13 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
 
         if (block.type === 'button') {
           return (
-            <section key={block.id} className="w-full py-8 bg-white text-center">
+            <section key={block.id} className="w-full py-8 text-center">
               <a 
                 href={block.data.link || "#checkout-form"}
-                className="inline-flex items-center justify-center gap-3 bg-primary hover:bg-primary-dark text-white font-black text-lg py-4 px-10 rounded-full transition-all shadow-xl shadow-primary/20 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/30"
+                className="bg-primary hover:bg-primary-dark text-white font-bold px-8 py-4 rounded-xl transition-all shadow-md shadow-primary/20 hover:-translate-y-0.5 inline-flex items-center gap-3 text-lg"
               >
-                <ShoppingCart size={24} />
-                {block.data.label || "BUY NOW"}
+                <span>{block.data.label || "BUY NOW"}</span>
+                <ArrowRight size={20} />
               </a>
             </section>
           );
@@ -64,13 +66,11 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
         if (block.type === 'image' || block.type === 'carousel') {
            if (block.data.urls && block.data.urls.length === 1) {
              return (
-               <section key={block.id} className="w-full py-12 bg-gray-50">
-                 <div className="max-w-5xl mx-auto px-6">
-                   <div className="relative w-full aspect-video rounded-[2rem] overflow-hidden shadow-sm border border-gray-100">
-                     <Image src={block.data.urls[0]} alt="Image" fill className="object-cover" />
-                   </div>
+               <div key={block.id} className="container-custom py-8">
+                 <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-xs border border-gray-100/80 bg-[#FAF8F5]">
+                   <Image src={block.data.urls[0]} alt="Image" fill className="object-cover" />
                  </div>
-               </section>
+               </div>
              )
            } else if (block.data.urls && block.data.urls.length > 1) {
              return <CarouselBlock key={block.id} urls={block.data.urls} />;
@@ -79,9 +79,9 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
 
         if (block.type === 'body') {
           return (
-            <section key={block.id} className="w-full py-12 bg-white">
-              <div className="max-w-4xl mx-auto px-6">
-                <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
+            <section key={block.id} className="w-full py-8">
+              <div className="max-w-4xl mx-auto px-6 text-center md:text-left">
+                <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-medium">
                   {block.data.text}
                 </p>
               </div>
@@ -91,32 +91,30 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
 
         if (block.type === 'list') {
           return (
-            <section key={block.id} className="w-full py-12 bg-white">
-              <div className="max-w-4xl mx-auto px-6">
-                <div className="bg-white rounded-[2rem] p-8 md:p-12 shadow-sm border border-gray-100">
-                  <ul className="space-y-6">
-                    {(block.data.items || []).map((item: string, i: number) => (
-                      <li key={i} className="flex gap-5 items-start">
-                        <CheckCircle2 size={28} className="text-primary shrink-0 mt-0.5" />
-                        <span className="text-gray-700 text-xl font-bold leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div key={block.id} className="container-custom py-8">
+              <div className="max-w-4xl mx-auto bg-[#FAF8F5] rounded-3xl p-8 md:p-12 shadow-xs border border-gray-100/80">
+                <ul className="space-y-6">
+                  {(block.data.items || []).map((item: string, i: number) => (
+                    <li key={i} className="flex gap-4 items-start">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                        <CheckCircle2 size={20} />
+                      </div>
+                      <span className="text-gray-900 text-lg md:text-xl font-bold leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </section>
+            </div>
           );
         }
 
         if (block.type === 'form') {
           return (
-            <section key={block.id} className="w-full py-16 bg-gray-50">
-              <div className="max-w-3xl mx-auto px-6">
-                <div className="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
-                  <CheckoutFormBlock block={block} />
-                </div>
+            <div key={block.id} className="container-custom py-12">
+              <div className="max-w-3xl mx-auto bg-[#FAF8F5] rounded-3xl shadow-xs overflow-hidden border border-gray-100/80">
+                <CheckoutFormBlock block={block} />
               </div>
-            </section>
+            </div>
           );
         }
 
@@ -137,38 +135,41 @@ function CarouselBlock({ urls }: { urls: string[] }) {
   };
 
   return (
-    <section className="w-full py-12 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 group relative">
-        <button onClick={() => scroll('left')} className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-white/90 text-primary p-3 rounded-full shadow-lg border border-gray-100 hover:bg-primary hover:text-white transition-all">
-          <ChevronLeft size={24} />
-        </button>
-        <button onClick={() => scroll('right')} className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-white/90 text-primary p-3 rounded-full shadow-lg border border-gray-100 hover:bg-primary hover:text-white transition-all">
-          <ChevronRight size={24} />
-        </button>
-        
-        <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar justify-start">
-          {urls.map((img: string, i: number) => (
-            <div key={i} className="relative shrink-0 w-[240px] h-[180px] md:w-[280px] md:h-[200px] snap-center rounded-2xl overflow-hidden bg-gray-50 border border-gray-200 shadow-sm hover:scale-105 transition-transform duration-500">
-              <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
-            </div>
-          ))}
-        </div>
+    <div className="container-custom py-8 relative group">
+      <button onClick={() => scroll('left')} className="absolute left-6 top-1/2 -translate-y-1/2 z-10 bg-white text-gray-900 p-3 rounded-full shadow-md border border-gray-100/80 hover:bg-gray-50 transition-all">
+        <ChevronLeft size={24} />
+      </button>
+      <button onClick={() => scroll('right')} className="absolute right-6 top-1/2 -translate-y-1/2 z-10 bg-white text-gray-900 p-3 rounded-full shadow-md border border-gray-100/80 hover:bg-gray-50 transition-all">
+        <ChevronRight size={24} />
+      </button>
+      
+      <div ref={scrollRef} className="flex gap-4 md:gap-6 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar justify-start">
+        {urls.map((img: string, i: number) => (
+          <div key={i} className="relative shrink-0 w-[260px] h-[200px] md:w-[320px] md:h-[240px] snap-center rounded-3xl overflow-hidden bg-[#FAF8F5] border border-gray-100/80 shadow-xs hover:shadow-md transition-shadow">
+            <Image src={img} alt={`Gallery ${i}`} fill className="object-cover" />
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }
 
 function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const price = block.data.price || 25000;
+  
+  const options = block.data.options || [{ label: "1 piece", quantity: 1, price: block.data.price || 25000 }];
+  const originalPrice = block.data.originalPrice || null;
+  const productName = block.data.productName || 'Product';
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selectedOption = options[selectedIndex] || options[0];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     
     const formData = new FormData(e.currentTarget);
-    const quantity = Number(formData.get("quantity") || 1);
     
     try {
       const response = await fetch('/api/orders', {
@@ -179,16 +180,16 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           customerEmail: formData.get("email"),
           customerPhone: formData.get("phone"),
           shippingAddress: formData.get("location"),
-          amount: price * quantity,
-          items: [{ name: block.data.productName || 'Product', quantity, price: price }]
+          amount: selectedOption.price,
+          items: [{ name: productName, quantity: selectedOption.quantity, price: selectedOption.price }]
         }),
       });
       if (response.ok) {
         setSuccess(true);
         if (typeof window !== 'undefined' && (window as any).fbq) {
           (window as any).fbq('track', 'Lead', {
-            content_name: block.data.productName || 'Product',
-            value: price * quantity,
+            content_name: productName,
+            value: selectedOption.price,
             currency: 'NGN'
           });
         }
@@ -202,11 +203,11 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
 
   if (success) {
     return (
-      <div className="p-12 text-center h-full flex flex-col items-center justify-center bg-emerald-50">
-        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="text-primary" size={40} />
+      <div className="p-12 text-center h-full flex flex-col items-center justify-center bg-[#FAF8F5]">
+        <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <CheckCircle2 className="text-green-600" size={48} />
         </div>
-        <h3 className="text-3xl font-black text-gray-900 mb-4">Order Confirmed!</h3>
+        <h3 className="font-editorial text-3xl font-black text-gray-900 mb-4">Order Confirmed!</h3>
         <p className="text-gray-600 text-lg">Thank you for your order. We will contact you shortly.</p>
       </div>
     );
@@ -215,62 +216,70 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   return (
     <div id="checkout-form" className="p-8 md:p-12">
       <div className="text-center mb-8">
-        <h3 className="text-3xl font-black text-gray-900 mb-3">Order Now</h3>
-        <p className="text-gray-600">{block.data.productName}</p>
+        <h3 className="font-editorial text-4xl font-black text-gray-900 mb-2">Order Now</h3>
+        <p className="text-gray-500 font-medium text-lg">{productName}</p>
       </div>
       
-      <div className="bg-primary/10 text-primary font-bold text-center py-4 rounded-xl mb-8 flex justify-center items-center gap-2 text-xl">
-        <span>🔒</span> ₦{price.toLocaleString()} <span className="text-sm font-medium opacity-80">(Price Locked)</span>
+      <div className="bg-white border border-gray-100/80 text-gray-900 font-bold text-center py-5 rounded-2xl mb-8 flex flex-col justify-center items-center gap-1 shadow-sm">
+        <span className="text-sm text-gray-500 uppercase tracking-widest font-bold">Total Price</span>
+        <div className="flex items-center gap-3">
+          {originalPrice && (
+            <span className="text-gray-400 line-through text-xl">₦{originalPrice.toLocaleString()}</span>
+          )}
+          <span className="text-3xl text-primary font-black">₦{selectedOption.price.toLocaleString()}</span>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 uppercase">Name</label>
-            <input required name="name" type="text" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50" placeholder="Enter your full name" />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 uppercase">Email</label>
-            <input required name="email" type="email" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50" placeholder="Enter your email" />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 uppercase">Phone Number</label>
-            <input required name="phone" type="tel" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50" placeholder="Enter your phone number" />
-          </div>
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 uppercase">Location</label>
-            <input required name="location" type="text" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50" placeholder="Enter your location" />
-          </div>
-        </div>
-        
         <div className="space-y-1.5 w-full">
-          <label className="text-xs font-bold text-gray-600 uppercase">Quantity</label>
+          <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Select Package</label>
           <div className="relative">
-            <select required name="quantity" className="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-gray-50 appearance-none font-bold text-center">
-              <option value="1">1 piece</option>
-              <option value="2">2 pieces</option>
-              <option value="3">3 pieces</option>
-              <option value="4">4 pieces</option>
-              <option value="5">5 pieces</option>
+            <select 
+              value={selectedIndex}
+              onChange={(e) => setSelectedIndex(Number(e.target.value))}
+              className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white appearance-none font-bold text-gray-900 shadow-sm"
+            >
+              {options.map((opt: any, idx: number) => (
+                <option key={idx} value={idx}>{opt.label}</option>
+              ))}
             </select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Name</label>
+            <input required name="name" type="text" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white shadow-sm" placeholder="Enter your full name" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Email</label>
+            <input required name="email" type="email" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white shadow-sm" placeholder="Enter your email" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Phone Number</label>
+            <input required name="phone" type="tel" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white shadow-sm" placeholder="Enter your phone number" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Location</label>
+            <input required name="location" type="text" className="w-full px-5 py-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white shadow-sm" placeholder="Enter your location" />
           </div>
         </div>
         
         <button 
           type="submit" 
           disabled={loading}
-          className="w-full mt-4 bg-primary hover:bg-primary-dark text-white font-black text-xl py-5 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-primary/20 flex items-center justify-center gap-2"
+          className="w-full mt-6 bg-primary hover:bg-primary-dark text-white font-bold text-lg py-5 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-md shadow-primary/20 flex items-center justify-center gap-2"
         >
           {loading ? "Processing..." : (
             <>
-              🔒 Place Order – ₦{price.toLocaleString()}
+              Complete Order – ₦{selectedOption.price.toLocaleString()}
             </>
           )}
         </button>
-        <p className="text-center text-xs text-gray-500 font-medium pt-3">
-          <CheckCircle2 size={14} className="inline mr-1 text-primary" /> Your information is safe and secure.
+        <p className="text-center text-xs text-gray-400 font-medium pt-3 flex items-center justify-center gap-1.5">
+          <ShieldCheck size={14} className="text-green-500" /> Secure Checkout
         </p>
       </form>
     </div>

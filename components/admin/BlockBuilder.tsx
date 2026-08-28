@@ -315,23 +315,101 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
   }
 
   if (block.type === 'form') {
+    const options = block.data.options || [{ label: "1 piece", quantity: 1, price: block.data.price || 0 }];
     return (
-      <div className="space-y-3">
-        <p className="text-xs text-gray-500 mb-2">Configure Checkout Form:</p>
-        <input 
-          type="text" 
-          value={block.data.productName} 
-          onChange={(e) => onChange({ productName: e.target.value })}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-bold text-sm"
-          placeholder="Product Name for Order (e.g. Mop System)"
-        />
-        <input 
-          type="number" 
-          value={block.data.price} 
-          onChange={(e) => onChange({ price: Number(e.target.value) })}
-          className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
-          placeholder="Price (e.g. 15000)"
-        />
+      <div className="space-y-4">
+        <div>
+          <p className="text-xs text-gray-500 mb-1 font-bold">Product Name:</p>
+          <input 
+            type="text" 
+            value={block.data.productName || ''} 
+            onChange={(e) => onChange({ ...block.data, productName: e.target.value })}
+            className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-bold text-sm"
+            placeholder="e.g. Self-Cleaning Flat Mop System"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+             <p className="text-xs text-gray-500 mb-1 font-bold">Original Price:</p>
+             <input 
+               type="number" 
+               value={block.data.originalPrice || ''} 
+               onChange={(e) => onChange({ ...block.data, originalPrice: Number(e.target.value) })}
+               className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
+               placeholder="e.g. 30000"
+             />
+          </div>
+          <div>
+             <p className="text-xs text-gray-500 mb-1 font-bold">Discounted Price:</p>
+             <input 
+               type="number" 
+               value={block.data.price || ''} 
+               onChange={(e) => onChange({ ...block.data, price: Number(e.target.value) })}
+               className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm font-bold text-emerald-600"
+               placeholder="e.g. 25000"
+             />
+          </div>
+        </div>
+        
+        <div className="pt-2 border-t border-gray-100">
+          <p className="text-xs text-gray-700 mb-2 font-bold flex items-center gap-2">Quantity Dropdown Options:</p>
+          <div className="space-y-2">
+            {options.map((opt: any, idx: number) => (
+              <div key={idx} className="flex gap-2 items-start">
+                <input 
+                  type="text" 
+                  placeholder="Label (e.g. 2 Mops + Bucket...)" 
+                  value={opt.label || ''} 
+                  onChange={(e) => {
+                    const newOptions = [...options];
+                    newOptions[idx].label = e.target.value;
+                    onChange({ ...block.data, options: newOptions });
+                  }} 
+                  className="flex-1 bg-[#F4F7FB] px-3 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-emerald-500" 
+                />
+                <input 
+                  type="number" 
+                  placeholder="Qty" 
+                  value={opt.quantity || ''} 
+                  onChange={(e) => {
+                    const newOptions = [...options];
+                    newOptions[idx].quantity = Number(e.target.value);
+                    onChange({ ...block.data, options: newOptions });
+                  }} 
+                  className="w-16 bg-[#F4F7FB] px-2 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none text-center focus:border-emerald-500" 
+                />
+                <input 
+                  type="number" 
+                  placeholder="Total NGN" 
+                  value={opt.price || ''} 
+                  onChange={(e) => {
+                    const newOptions = [...options];
+                    newOptions[idx].price = Number(e.target.value);
+                    onChange({ ...block.data, options: newOptions });
+                  }} 
+                  className="w-24 bg-[#F4F7FB] px-2 py-2 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-emerald-500" 
+                />
+                <button 
+                  onClick={() => {
+                    const newOptions = options.filter((_: any, i: number) => i !== idx);
+                    onChange({ ...block.data, options: newOptions });
+                  }} 
+                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
+            <button 
+              onClick={() => {
+                onChange({ ...block.data, options: [...options, { label: "", quantity: 1, price: 0 }] });
+              }} 
+              className="mt-2 text-xs text-emerald-600 font-bold flex items-center gap-1 hover:bg-emerald-50 px-3 py-1.5 rounded-lg transition-colors"
+            >
+              <Plus size={14} /> Add Option
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
