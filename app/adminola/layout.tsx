@@ -7,7 +7,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const data = await getAdminDashboardData();
-  const orders = getStoreOrders();
+  const orders = await getStoreOrders();
   const messages = getCustomerMessages();
   
   const pendingOrdersCount = orders.filter(o => o.status === "Processing").length;

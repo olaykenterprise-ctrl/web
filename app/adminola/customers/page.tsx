@@ -3,8 +3,8 @@ export const dynamic = "force-dynamic";
 import { Users, Search } from "lucide-react";
 import { getAdminCustomersData } from "@/lib/admin-data";
 
-export default function AdminCustomersPage() {
-  const customers = getAdminCustomersData();
+export default async function AdminCustomersPage() {
+  const customers = await getAdminCustomersData();
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">

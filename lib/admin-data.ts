@@ -72,8 +72,24 @@ function writeStoreFile(data: { orders: Order[]; messages: MessageItem[] }) {
   }
 }
 
-export function getStoreOrders(): Order[] {
-  return readStoreFile().orders;
+export async function getStoreOrders(): Promise<Order[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+  if (error || !data) return [];
+  
+  return data.map(dbOrder => ({
+    id: dbOrder.id,
+    orderNumber: dbOrder.order_number,
+    customerName: dbOrder.customer_name,
+    customerEmail: dbOrder.customer_email,
+    customerPhone: dbOrder.customer_phone,
+    amount: dbOrder.amount,
+    status: dbOrder.status,
+    date: new Date(dbOrder.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    itemsCount: dbOrder.items_count,
+    items: dbOrder.items,
+    shippingAddress: dbOrder.shipping_address
+  }));
 }
 
 export function addStoreOrder(newOrder: Omit<Order, "id" | "orderNumber" | "date">) {
@@ -134,7 +150,7 @@ export async function getAdminDashboardData() {
     .select("*", { count: "exact", head: true });
 
   const products = productsData || [];
-  const orders = getStoreOrders();
+  const orders = await getStoreOrders();
   const messages = getCustomerMessages();
 
   // 2. Real Top Products (dynamically sorted by Supabase sold_count)
@@ -244,8 +260,8 @@ export async function getAdminDashboardData() {
   };
 }
 
-export function getAdminCustomersData(): Customer[] {
-  const orders = getStoreOrders();
+export async function getAdminCustomersData(): Promise<Customer[]> {
+  const orders = await getStoreOrders();
   const customerMap = new Map<string, Customer>();
 
   // Aggregate customer details from real store orders
