@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       items_count: items?.length || 1,
       items: items || [],
       shipping_address: shippingAddress || "Lagos, Nigeria"
-    }).select().single();
+    }); // removed select() because of RLS
 
     if (error) {
       console.error("Supabase insert error:", error);

@@ -1,12 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, ArrowUp, ArrowDown, Type, Heading1, Heading2, Image as ImageIcon, Images, List, Play, MousePointerClick } from "lucide-react";
+import { Plus, Trash2, ArrowUp, ArrowDown, Type, Heading1, Heading2, Image as ImageIcon, Images, List, Play, MousePointerClick, Sparkles } from "lucide-react";
 import { BlockType, PageBlock } from "@/lib/db";
 
-export function BlockBuilder({ initialBlocks = [], fieldName = "blocks" }: { initialBlocks?: PageBlock[], fieldName?: string }) {
+export function BlockBuilder({ 
+  initialBlocks = [], 
+  fieldName = "blocks",
+  onBlocksChange
+}: { 
+  initialBlocks?: PageBlock[], 
+  fieldName?: string,
+  onBlocksChange?: (blocks: PageBlock[]) => void
+}) {
   const [blocks, setBlocks] = useState<PageBlock[]>(initialBlocks);
-  const [showMenu, setShowMenu] = useState(false);
+
+  const notifyChange = (newBlocks: PageBlock[]) => {
+    setBlocks(newBlocks);
+    onBlocksChange?.(newBlocks);
+  };
 
   const addBlock = (type: BlockType) => {
     const newBlock: PageBlock = {
@@ -14,12 +26,11 @@ export function BlockBuilder({ initialBlocks = [], fieldName = "blocks" }: { ini
       type,
       data: getDefaultData(type)
     };
-    setBlocks([...blocks, newBlock]);
-    setShowMenu(false);
+    notifyChange([...blocks, newBlock]);
   };
 
   const removeBlock = (index: number) => {
-    setBlocks(blocks.filter((_, i) => i !== index));
+    notifyChange(blocks.filter((_, i) => i !== index));
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
@@ -29,25 +40,92 @@ export function BlockBuilder({ initialBlocks = [], fieldName = "blocks" }: { ini
     const newBlocks = [...blocks];
     const swapIndex = direction === 'up' ? index - 1 : index + 1;
     [newBlocks[index], newBlocks[swapIndex]] = [newBlocks[swapIndex], newBlocks[index]];
-    setBlocks(newBlocks);
+    notifyChange(newBlocks);
   };
 
   const updateBlockData = (index: number, newData: any) => {
     const newBlocks = [...blocks];
     newBlocks[index].data = { ...newBlocks[index].data, ...newData };
-    setBlocks(newBlocks);
+    notifyChange(newBlocks);
+  };
+
+  const loadHighConvertingTemplate = () => {
+    const templateBlocks: PageBlock[] = [
+      {
+        id: crypto.randomUUID(),
+        type: 'headline',
+        data: { 
+          badge: "Special Limited Deal",
+          text: "The Ultimate Premium Product System",
+          backgroundImage: ""
+        }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'subheadline',
+        data: { text: "Experience effortless quality and performance built for everyday living." }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'image',
+        data: { 
+          urls: [
+            "https://images.unsplash.com/photo-1589156280159-27698a70f29e?q=80&w=1200",
+            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200"
+          ] 
+        }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'body',
+        data: { text: "Engineered with precision and premium-grade materials, this product is designed to solve your everyday challenges effortlessly. Enjoy durable craftsmanship, elegant styling, and proven reliability trusted by thousands of happy customers nationwide." }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'list',
+        data: { 
+          items: [
+            "Premium Quality: Crafted from high-grade, durable materials designed to last.",
+            "Effortless Setup: Ready to use right out of the box in under 60 seconds.",
+            "Ergonomic Design: Lightweight, intuitive, and comfortable for everyday use.",
+            "Complete Value Package: Includes all required accessories at no extra cost.",
+            "Free Nationwide Delivery: Shipped straight to your doorstep with zero shipping fees."
+          ] 
+        }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'button',
+        data: { label: "ORDER NOW - FREE DELIVERY", link: "#checkout-form" }
+      },
+      {
+        id: crypto.randomUUID(),
+        type: 'form',
+        data: { 
+          productName: "Premium Product Package", 
+          originalPrice: 35000,
+          price: 25000,
+          options: [
+            { label: "1 Complete Set - ₦25,000", quantity: 1, price: 25000 },
+            { label: "2 Sets - ₦45,000 (Save ₦5,000)", quantity: 2, price: 45000 },
+            { label: "3 Sets - ₦60,000 (Best Value - Save ₦15,000)", quantity: 3, price: 60000 }
+          ]
+        }
+      }
+    ];
+    notifyChange(templateBlocks);
   };
 
   const getDefaultData = (type: BlockType) => {
     switch (type) {
-      case 'headline': return { text: '' };
+      case 'headline': return { text: '', badge: 'Special Promotion' };
       case 'subheadline': return { text: '' };
       case 'body': return { text: '' };
       case 'image': return { urls: [''] };
-      case 'list': return { items: ['', ''] };
+      case 'list': return { items: ['Feature Name: Short benefit description...', 'Second Feature: Another key benefit...'] };
       case 'video': return { url: '' };
-      case 'button': return { label: 'Shop Now', link: '/' };
-      case 'form': return { productName: 'Product Name', price: 10000 };
+      case 'button': return { label: 'Shop Now', link: '#checkout-form' };
+      case 'form': return { productName: 'Product Name', originalPrice: 35000, price: 25000 };
       default: return {};
     }
   };
@@ -58,12 +136,37 @@ export function BlockBuilder({ initialBlocks = [], fieldName = "blocks" }: { ini
       <input type="hidden" name={fieldName} value={JSON.stringify(blocks)} />
 
       {blocks.length === 0 ? (
-        <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50">
-          <p className="text-gray-500 mb-4 font-medium">No content blocks added yet.</p>
-          <AddMenu onAdd={addBlock} />
+        <div className="text-center py-12 px-6 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50/70">
+          <div className="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-accent border border-amber-200/50">
+            <Sparkles size={22} />
+          </div>
+          <h3 className="text-sm font-bold text-gray-900 mb-1">No content blocks yet</h3>
+          <p className="text-xs text-gray-500 mb-6 max-w-sm mx-auto">
+            Start completely from scratch or load the pre-designed high-converting template.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={loadHighConvertingTemplate}
+              className="flex items-center gap-2 bg-accent hover:bg-accent-dark text-primary-dark font-black px-5 py-2.5 rounded-xl transition-all shadow-sm text-xs"
+            >
+              <Sparkles size={14} /> Load High-Converting Template
+            </button>
+            <AddMenu onAdd={addBlock} />
+          </div>
         </div>
       ) : (
         <div className="space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{blocks.length} Blocks Configured</span>
+            <button
+              type="button"
+              onClick={loadHighConvertingTemplate}
+              className="text-xs font-bold text-accent-dark hover:text-amber-800 flex items-center gap-1.5 bg-amber-50/80 hover:bg-amber-100 px-3 py-1.5 rounded-lg transition-colors border border-amber-200/60"
+            >
+              <Sparkles size={13} /> Reset to Default Template
+            </button>
+          </div>
           {blocks.map((block, index) => (
             <div key={block.id} className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden group">
               <div className="bg-gray-50 px-4 py-2.5 border-b border-gray-100 flex items-center justify-between">
@@ -164,6 +267,15 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
   if (block.type === 'headline' || block.type === 'subheadline') {
     return (
       <div className="space-y-3">
+        {block.type === 'headline' && (
+          <input 
+            type="text" 
+            value={block.data.badge || ''} 
+            onChange={(e) => onChange({ ...block.data, badge: e.target.value })}
+            className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-xs font-bold text-amber-800"
+            placeholder="Accent Tag / Badge (e.g. Special Promotion, Limited Stock Deal)..."
+          />
+        )}
         <input 
           type="text" 
           value={block.data.text || ''} 
@@ -191,7 +303,7 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
         onChange={(e) => onChange({ text: e.target.value })}
         rows={4}
         className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-gray-800 text-sm resize-none"
-        placeholder="Write some text..."
+        placeholder="Write your product story or overview description..."
       />
     );
   }
@@ -202,7 +314,7 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
     
     return (
       <div className="space-y-2">
-        <p className="text-xs text-gray-500 mb-2">Add one image to display it, or multiple to create a carousel:</p>
+        <p className="text-xs text-gray-500 mb-2">Add one image to display it, or multiple to create an interactive carousel:</p>
         {urls.map((img: string, i: number) => (
           <div key={i} className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 text-gray-400 text-xs font-bold">{i+1}</div>
@@ -243,53 +355,61 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
   if (block.type === 'list') {
     const items = block.data.items || [];
     return (
-      <div className="space-y-2">
-        {items.map((item: string, i: number) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0 mx-2"></div>
-            <input 
-              type="text" 
-              value={item} 
-              onChange={(e) => {
-                const newItems = [...items];
-                newItems[i] = e.target.value;
-                onChange({ items: newItems });
-              }}
-              className="flex-1 bg-[#F4F7FB] px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
-              placeholder="List item..."
-            />
-            <button 
-              type="button" 
-              onClick={() => {
-                const newItems = items.filter((_: any, index: number) => index !== i);
-                onChange({ items: newItems });
-              }}
-              className="p-2 text-gray-400 hover:text-red-500"
-            >
-              <Trash2 size={14} />
-            </button>
-          </div>
-        ))}
-        <button 
-          type="button" 
-          onClick={() => onChange({ items: [...items, ''] })}
-          className="text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-2 px-2"
-        >
-          + Add Item
-        </button>
+      <div className="space-y-3">
+        <div className="bg-amber-50/70 border border-amber-200/60 rounded-xl p-3 text-xs text-amber-900">
+          💡 <strong>Pro Tip:</strong> Type items in <code>Feature Name: Description</code> format (e.g. <code>Double Scraper Blades: Squeezes water in a few pulls</code>) to automatically render high-end two-tone feature cards matching the home page!
+        </div>
+        <div className="space-y-2">
+          {items.map((item: string, i: number) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-400 shrink-0 mx-2"></div>
+              <input 
+                type="text" 
+                value={item} 
+                onChange={(e) => {
+                  const newItems = [...items];
+                  newItems[i] = e.target.value;
+                  onChange({ items: newItems });
+                }}
+                className="flex-1 bg-[#F4F7FB] px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
+                placeholder="e.g. Premium Durability: Built with reinforced materials for long life."
+              />
+              <button 
+                type="button" 
+                onClick={() => {
+                  const newItems = items.filter((_: any, index: number) => index !== i);
+                  onChange({ items: newItems });
+                }}
+                className="p-2 text-gray-400 hover:text-red-500"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+          ))}
+          <button 
+            type="button" 
+            onClick={() => onChange({ items: [...items, ''] })}
+            className="text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-2 px-2"
+          >
+            + Add Item
+          </button>
+        </div>
       </div>
     );
   }
 
   if (block.type === 'video') {
     return (
-      <input 
-        type="url" 
-        value={block.data.url} 
-        onChange={(e) => onChange({ url: e.target.value })}
-        className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
-        placeholder="YouTube Video URL (https://www.youtube.com/...)"
-      />
+      <div className="space-y-2">
+        <p className="text-xs text-gray-500">Paste your YouTube link below. It will automatically be converted to a responsive high-definition video player on the landing page:</p>
+        <input 
+          type="url" 
+          value={block.data.url || ''} 
+          onChange={(e) => onChange({ url: e.target.value })}
+          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
+          placeholder="YouTube Video URL (https://www.youtube.com/watch?v=...)"
+        />
+      </div>
     );
   }
 
