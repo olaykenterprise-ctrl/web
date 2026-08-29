@@ -190,3 +190,14 @@ export async function getLandingPageBySlug(slug: string): Promise<LandingPage | 
   return data ? mapLandingPage(data) : null;
 }
 
+
+export async function getAllLandingPages(): Promise<LandingPage[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("landing_pages")
+    .select("*")
+    .eq("is_published", true)
+    .order("created_at", { ascending: false });
+    
+  return data ? data.map(mapLandingPage) : [];
+}
