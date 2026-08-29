@@ -216,6 +216,9 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   return (
     <div id="checkout-form" className="p-8 md:p-12">
       <div className="text-center mb-8">
+        <div className="inline-block bg-green-100 text-green-700 font-bold px-4 py-1 rounded-full text-xs tracking-widest uppercase mb-4 shadow-sm border border-green-200">
+          🚚 Free Delivery Nationwide
+        </div>
         <h3 className="font-editorial text-4xl font-black text-gray-900 mb-2">Order Now</h3>
         <p className="text-gray-500 font-medium text-lg">{productName}</p>
       </div>
