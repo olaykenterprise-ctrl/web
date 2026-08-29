@@ -72,8 +72,10 @@ function writeStoreFile(data: { orders: Order[]; messages: MessageItem[] }) {
   }
 }
 
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
 export async function getStoreOrders(): Promise<Order[]> {
-  const supabase = await createClient();
+  const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
   const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
   if (error || !data) return [];
   
