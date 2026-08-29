@@ -256,7 +256,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           customerName: formData.get("name"),
           customerEmail: formData.get("email"),
           customerPhone: formData.get("phone"),
-          shippingAddress: formData.get("location"),
+          shippingAddress: `${formData.get("address")}, ${formData.get("city")}`,
           amount: selectedOption.price,
           items: [{ name: productName, quantity: selectedOption.quantity, price: selectedOption.price }]
         }),
@@ -341,9 +341,13 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
             <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Phone Number</label>
             <input required name="phone" type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="Active phone number" />
           </div>
+          <div className="space-y-1.5 md:col-span-2">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Street Address</label>
+            <input required name="address" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="Detailed delivery address" />
+          </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Location / State</label>
-            <input required name="location" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="City / State for delivery" />
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">City / State</label>
+            <input required name="city" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="e.g. Ikeja, Lagos" />
           </div>
         </div>
         

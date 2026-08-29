@@ -83,7 +83,7 @@ export default async function AdminOrdersPage() {
                     </td>
                     <td className="py-4 px-6">
                       <div className="font-semibold text-gray-900">{order.customerName}</div>
-                      <div className="text-[11px] text-gray-400">{order.customerEmail}</div>
+                      <div className="text-[11px] text-gray-400">{order.customerPhone}</div>
                     </td>
                     <td className="py-4 px-6 font-medium text-gray-600">
                       {order.itemsCount || 1} {order.itemsCount === 1 ? "item" : "items"}
@@ -101,13 +101,14 @@ export default async function AdminOrdersPage() {
                       {order.date}
                     </td>
                     <td className="py-4 px-6 text-right">
-                      <button
+                      <Link
+                        href={`/adminola/orders/${order.id}`}
                         title="View details"
                         className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors inline-flex items-center gap-1 font-semibold text-xs"
                       >
                         <Eye size={15} />
                         <span>View</span>
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 );
