@@ -1,16 +1,31 @@
 "use client";
 
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 import { useState } from "react";
 
+const WHATSAPP_NUMBER = "2347012367611";
+
+const TOPICS = [
+  { id: "order", label: "Order Inquiry", text: "Hi, I have a question about my order." },
+  { id: "product", label: "Product Question", text: "Hi, I would like to know more about a product." },
+  { id: "returns", label: "Returns & Refunds", text: "Hi, I need help with a return or refund." },
+  { id: "other", label: "Other", text: "Hi, I have a general inquiry." },
+];
+
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState(TOPICS[0]);
+
+  const handleWhatsApp = () => {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(selectedTopic.text)}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="container-custom py-16 min-h-[60vh]">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-center">Contact Us</h1>
         <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-          Have a question about an order, a product, or our warranty policies? We're here to help! Reach out to us using the form below or through our contact information.
+          Have a question about an order, a product, or our warranty policies? We're here to help! Reach out to us directly via WhatsApp or through our contact information.
         </p>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -50,94 +65,49 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="md:col-span-2 bg-white p-8 rounded-3xl border border-gray-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
+          {/* WhatsApp Contact Selection */}
+          <div className="md:col-span-2 bg-white p-8 rounded-3xl border border-gray-200 shadow-sm flex flex-col justify-center">
+            <div className="mb-8 text-center">
+              <div className="w-16 h-16 bg-[#25D366]/10 text-[#25D366] rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageCircle size={32} />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Message us on WhatsApp</h2>
+              <p className="text-gray-600">Get a faster response by messaging us directly.</p>
+            </div>
             
-            {submitted ? (
-              <div className="bg-green-50 p-6 rounded-2xl border border-green-200 flex flex-col items-center justify-center text-center h-full min-h-[300px]">
-                <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle size={32} />
+            <div className="space-y-4 max-w-md mx-auto w-full">
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-gray-700 block text-center">What is your inquiry about?</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {TOPICS.map((topic) => (
+                    <button
+                      key={topic.id}
+                      onClick={() => setSelectedTopic(topic)}
+                      className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
+                        selectedTopic.id === topic.id
+                          ? "border-[#25D366] bg-[#25D366]/5 text-[#25D366]"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      {topic.label}
+                    </button>
+                  ))}
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
-                <p className="text-gray-600 mb-6">We've received your message and will get back to you within 24 hours.</p>
+              </div>
+
+              <div className="pt-6">
                 <button 
-                  onClick={() => setSubmitted(false)}
-                  className="text-primary font-semibold hover:underline"
+                  onClick={handleWhatsApp}
+                  className="w-full bg-[#25D366] hover:bg-[#1EBE5A] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 shadow-lg shadow-[#25D366]/20"
                 >
-                  Send another message
+                  <MessageCircle size={20} /> Contact via WhatsApp
                 </button>
               </div>
-            ) : (
-              <form
-                className="space-y-4"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const formData = new FormData(e.currentTarget);
-                  const firstName = formData.get("firstName") as string || "";
-                  const lastName = formData.get("lastName") as string || "";
-                  const email = formData.get("email") as string || "";
-                  const subject = formData.get("subject") as string || "General Inquiry";
-                  const message = formData.get("message") as string || "";
-
-                  try {
-                    await fetch("/api/messages", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        name: `${firstName} ${lastName}`.trim() || "Customer",
-                        email,
-                        subject,
-                        message
-                      })
-                    });
-                  } catch (err) {
-                    console.error("Message send error:", err);
-                  }
-
-                  setSubmitted(true);
-                }}
-              >
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label htmlFor="firstName" className="text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" id="firstName" name="firstName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="John" />
-                  </div>
-                  <div className="space-y-1">
-                    <label htmlFor="lastName" className="text-sm font-medium text-gray-700">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="Doe" />
-                  </div>
-                </div>
-                
-                <div className="space-y-1">
-                  <label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</label>
-                  <input type="email" id="email" name="email" required className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all" placeholder="john@example.com" />
-                </div>
-
-                <div className="space-y-1">
-                  <label htmlFor="subject" className="text-sm font-medium text-gray-700">Subject</label>
-                  <select id="subject" name="subject" className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all bg-white">
-                    <option>Order Inquiry</option>
-                    <option>Product Question</option>
-                    <option>Returns & Refunds</option>
-                    <option>Partnership</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label htmlFor="message" className="text-sm font-medium text-gray-700">Message</label>
-                  <textarea id="message" name="message" required rows={5} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none" placeholder="How can we help you?"></textarea>
-                </div>
-
-                <button type="submit" className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-1 shadow-lg shadow-primary/20">
-                  <Send size={18} /> Send Message
-                </button>
-              </form>
-            )}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
