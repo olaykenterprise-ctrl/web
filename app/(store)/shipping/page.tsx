@@ -28,6 +28,9 @@ export default function ShippingPage() {
               <Truck size={24} className="text-primary" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Nationwide Deliveries</h2>
+            <div className="bg-amber-50 text-amber-800 p-4 rounded-xl text-sm mb-4 border border-amber-200">
+              <strong>Please Note:</strong> Payment on Delivery is available <strong>within Lagos only</strong>. For all orders outside Lagos, payment is required before shipping.
+            </div>
             <ul className="space-y-3 text-gray-600">
               <li className="flex gap-2"><Clock size={20} className="text-accent flex-shrink-0" /> <strong>Standard Delivery:</strong> 3-5 Business Days</li>
               <li className="flex gap-2"><MapPin size={20} className="text-accent flex-shrink-0" /> <strong>Coverage:</strong> All 36 States including FCT</li>

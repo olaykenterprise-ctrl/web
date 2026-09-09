@@ -59,7 +59,7 @@ export function HeroBanner() {
               </div>
               <div>
                 <p className="text-xs font-bold text-gray-900 leading-tight">Fast & Reliable</p>
-                <p className="text-[11px] text-gray-500">Nationwide Delivery</p>
+                <p className="text-[11px] text-gray-500">Nationwide Delivery (POD in Lagos)</p>
               </div>
             </div>
 

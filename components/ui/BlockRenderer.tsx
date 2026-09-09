@@ -231,6 +231,14 @@ function CarouselBlock({ urls }: { urls: string[] }) {
   );
 }
 
+const NIGERIA_STATES = [
+  "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", 
+  "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT - Abuja", "Gombe", 
+  "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", 
+  "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", 
+  "Taraba", "Yobe", "Zamfara"
+];
+
 function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -240,6 +248,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const productName = block.data.productName || 'Product';
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedState, setSelectedState] = useState("Lagos");
   const selectedOption = options[selectedIndex] || options[0];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -256,7 +265,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           customerName: formData.get("name"),
           customerEmail: formData.get("email"),
           customerPhone: formData.get("phone"),
-          shippingAddress: `${formData.get("address")}, ${formData.get("city")}`,
+          shippingAddress: `${formData.get("address")}, ${formData.get("city")}, ${formData.get("state")}`, // modified
           amount: selectedOption.price,
           items: [{ name: productName, quantity: selectedOption.quantity, price: selectedOption.price }]
         }),
@@ -346,10 +355,35 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
             <input required name="address" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="Detailed delivery address" />
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">City / State</label>
-            <input required name="city" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="e.g. Ikeja, Lagos" />
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">State</label>
+            <select 
+              required 
+              name="state" 
+              value={selectedState}
+              onChange={(e) => setSelectedState(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs appearance-none"
+            >
+              {NIGERIA_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">City / LGA</label>
+            <input required name="city" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="e.g. Ikeja" />
           </div>
         </div>
+
+        {/* Dynamic Warning Message */}
+        {selectedState === 'Lagos' ? (
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2">
+            <span className="text-base">✅</span>
+            Payment on Delivery Available!
+          </div>
+        ) : (
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-medium flex items-start gap-2">
+            <span className="text-base mt-0.5">⚠️</span>
+            <p><strong>Notice:</strong> Orders outside Lagos require Payment BEFORE Delivery. Please only submit this form if you are ready to make a transfer when our sales rep calls you.</p>
+          </div>
+        )}
         
         <button 
           type="submit" 
@@ -380,7 +414,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
             </div>
             <div>
               <p className="text-[11px] font-bold text-gray-900 leading-tight">Fast Delivery</p>
-              <p className="text-[10px] text-gray-500">Nationwide Delivery</p>
+              <p className="text-[10px] text-gray-500">Payment on Delivery (Lagos Only)</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

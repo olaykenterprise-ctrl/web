@@ -18,8 +18,8 @@ export function TrustSection() {
     {
       icon: <Truck size={18} className="text-accent-dark" />,
       badgeBg: "bg-accent/15",
-      title: "Fast Nationwide Delivery",
-      description: "Get your orders quickly, wherever you are.",
+      title: "Free Nationwide Delivery",
+      description: "Payment on delivery available exclusively in Lagos.",
     },
     {
       icon: <Headphones size={18} className="text-primary" />,

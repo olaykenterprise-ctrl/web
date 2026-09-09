@@ -61,7 +61,7 @@ export function Navbar() {
         <div className="container-custom flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center gap-2 mx-auto sm:mx-0">
             <Truck size={13} className="text-accent" />
-            <span className="font-medium tracking-wide">Free Shipping Nationwide</span>
+            <span className="font-medium tracking-wide">Free Nationwide Delivery (POD in Lagos Only)</span>
           </div>
           <div className="hidden md:flex items-center gap-2">
             <ShieldCheck size={13} className="text-accent" />

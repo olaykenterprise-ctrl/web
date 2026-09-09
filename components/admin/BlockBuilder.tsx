@@ -78,7 +78,7 @@ export function BlockBuilder({
       {
         id: crypto.randomUUID(),
         type: 'body',
-        data: { text: "Engineered with precision and premium-grade materials, this product is designed to solve your everyday challenges effortlessly. Enjoy durable craftsmanship, elegant styling, and proven reliability trusted by thousands of happy customers nationwide." }
+        data: { text: "Engineered with precision and premium-grade materials, this product is designed to solve your everyday challenges effortlessly. Enjoy durable craftsmanship, elegant styling, and proven reliability trusted by thousands of happy customers." }
       },
       {
         id: crypto.randomUUID(),
@@ -89,7 +89,7 @@ export function BlockBuilder({
             "Effortless Setup: Ready to use right out of the box in under 60 seconds.",
             "Ergonomic Design: Lightweight, intuitive, and comfortable for everyday use.",
             "Complete Value Package: Includes all required accessories at no extra cost.",
-            "Free Nationwide Delivery: Shipped straight to your doorstep with zero shipping fees."
+            "Free Nationwide Delivery: Shipped straight to your doorstep (POD available in Lagos)."
           ] 
         }
       },

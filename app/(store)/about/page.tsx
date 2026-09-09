@@ -20,8 +20,8 @@ export default function AboutPage() {
             <p className="text-gray-600 text-sm">Every product in our inventory undergoes strict quality control to ensure durability and performance.</p>
           </div>
           <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-            <h3 className="text-xl font-bold text-primary mb-2">Fast Nationwide Delivery</h3>
-            <p className="text-gray-600 text-sm">We partner with the best logistics companies to ensure your orders reach you anywhere in Nigeria, fast.</p>
+            <h3 className="text-xl font-bold text-primary mb-2">Nationwide Delivery (POD in Lagos)</h3>
+            <p className="text-gray-600 text-sm">We ensure your orders reach you anywhere in Nigeria. Enjoy Payment on Delivery exclusively within Lagos.</p>
           </div>
           <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
             <h3 className="text-xl font-bold text-primary mb-2">Customer First</h3>

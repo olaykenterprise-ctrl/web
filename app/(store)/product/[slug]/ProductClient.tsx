@@ -250,7 +250,7 @@ export function ProductClient({ product, relatedProducts }: { product: Product, 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6 border-y border-gray-100">
               <div className="flex flex-col items-center text-center gap-2">
                 <Truck size={24} strokeWidth={1.5} className="text-gray-700" />
-                <span className="text-xs font-medium text-gray-600">Nationwide<br/>Delivery</span>
+                <span className="text-xs font-medium text-gray-600">Nationwide Delivery<br/><span className="text-[10px] text-emerald-600">(POD in Lagos)</span></span>
               </div>
               <div className="flex flex-col items-center text-center gap-2">
                 <ShieldCheck size={24} strokeWidth={1.5} className="text-gray-700" />
