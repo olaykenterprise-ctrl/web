@@ -248,7 +248,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const productName = block.data.productName || 'Product';
 
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedState, setSelectedState] = useState("Lagos");
+  const [selectedState, setSelectedState] = useState("");
   const selectedOption = options[selectedIndex] || options[0];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -302,8 +302,11 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   return (
     <div id="checkout-form" className="p-6 sm:p-10 md:p-12">
       <div className="text-center mb-6 sm:mb-8">
-        <div className="inline-block bg-green-100 text-green-800 font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-3 shadow-2xs border border-green-200">
+        <div className="inline-block bg-green-100 text-green-800 font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-1 shadow-2xs border border-green-200">
           🚚 Free Delivery Nationwide
+        </div>
+        <div className="inline-block bg-amber-100 text-amber-800 font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-3 shadow-2xs border border-amber-200">
+          💵 Payment on Delivery (Lagos Only)
         </div>
         <h3 className="font-editorial text-3xl sm:text-4xl font-black text-gray-900 mb-1 tracking-tight">Order Now</h3>
         <p className="text-gray-500 font-medium text-sm sm:text-base">{productName}</p>
@@ -363,6 +366,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
               onChange={(e) => setSelectedState(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs appearance-none"
             >
+              <option value="" disabled>Select your state...</option>
               {NIGERIA_STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
@@ -372,16 +376,20 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           </div>
         </div>
 
-        {/* Dynamic Warning Message */}
         {selectedState === 'Lagos' ? (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2 mt-4">
             <span className="text-base">✅</span>
             Payment on Delivery Available!
           </div>
-        ) : (
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-medium flex items-start gap-2">
+        ) : selectedState !== '' ? (
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-xs font-medium flex items-start gap-2 mt-4">
             <span className="text-base mt-0.5">⚠️</span>
             <p><strong>Notice:</strong> Orders outside Lagos require Payment BEFORE Delivery. Please only submit this form if you are ready to make a transfer when our sales rep calls you.</p>
+          </div>
+        ) : (
+          <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2 mt-4">
+            <span className="text-base">ℹ️</span>
+            Select your state to see delivery and payment options.
           </div>
         )}
         
