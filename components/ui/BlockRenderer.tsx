@@ -85,8 +85,13 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
         }
 
         if (block.type === 'video') {
+          const isShorts = (block.data.url || "").includes("/shorts/");
           const getEmbedUrl = (url: string) => {
             if (!url) return null;
+            // Handle Shorts: youtube.com/shorts/VIDEO_ID
+            const shortsMatch = url.match(/youtube\.com\/shorts\/([^?&]+)/);
+            if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+            // Handle regular youtube.com/watch, youtu.be, embed
             const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
             return match ? `https://www.youtube.com/embed/${match[1]}` : null;
           };
@@ -96,14 +101,32 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
 
           return (
             <div key={block.id} className="container-custom py-6 sm:py-8">
-              <div className="max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-xl bg-black aspect-video border-4 border-white relative">
-                <iframe 
-                  src={embedUrl} 
-                  title="Product Video" 
-                  allowFullScreen 
-                  className="absolute inset-0 w-full h-full"
-                />
-              </div>
+              {isShorts ? (
+                /* Vertical / portrait layout for Shorts */
+                <div className="flex flex-col items-center">
+                  <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Watch it in action</p>
+                  <div className="relative w-full max-w-[320px] rounded-3xl overflow-hidden shadow-xl bg-black border-4 border-white" style={{ aspectRatio: '9/16' }}>
+                    <iframe
+                      src={embedUrl}
+                      title="Product Video"
+                      allowFullScreen
+                      allow="autoplay; encrypted-media"
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                </div>
+              ) : (
+                /* Standard landscape layout */
+                <div className="max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-xl bg-black aspect-video border-4 border-white relative">
+                  <iframe
+                    src={embedUrl}
+                    title="Product Video"
+                    allowFullScreen
+                    allow="autoplay; encrypted-media"
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+              )}
             </div>
           );
         }
