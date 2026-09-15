@@ -72,6 +72,12 @@ export default function OrdersTableClient({ orders }: { orders: Order[] }) {
                         <td className="py-4 px-6">
                           <div className="font-semibold text-gray-900">{order.customerName}</div>
                           <div className="text-[11px] text-gray-400">{order.customerPhone}</div>
+                          {order.shippingAddress && (
+                            <div className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1">
+                              <MapPin size={9} className="shrink-0" />
+                              <span className="truncate max-w-[160px]">{order.shippingAddress}</span>
+                            </div>
+                          )}
                         </td>
                         <td className="py-4 px-6 font-medium text-gray-600">
                           {order.itemsCount || 1} {order.itemsCount === 1 ? "item" : "items"}
@@ -88,11 +94,10 @@ export default function OrdersTableClient({ orders }: { orders: Order[] }) {
                         <td className="py-4 px-6 text-right">
                           <button
                             onClick={() => setSelectedOrder(order)}
-                            title="View details"
-                            className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors inline-flex items-center gap-1 font-semibold text-xs"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition-all hover:shadow-sm"
                           >
-                            <Eye size={15} />
-                            <span>View</span>
+                            <Eye size={12} />
+                            See full details
                           </button>
                         </td>
                       </tr>
