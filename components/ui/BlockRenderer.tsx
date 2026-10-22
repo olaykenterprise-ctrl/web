@@ -267,7 +267,6 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const [success, setSuccess] = useState(false);
   
   const options = block.data.options || [{ label: "1 piece", quantity: 1, price: block.data.price || 25000 }];
-  const originalPrice = block.data.originalPrice || null;
   const productName = block.data.productName || 'Product';
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -337,12 +336,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
       
       <div className="bg-white border border-gray-200/80 text-gray-900 font-bold text-center py-4 sm:py-5 rounded-2xl mb-6 flex flex-col justify-center items-center gap-1 shadow-xs">
         <span className="text-xs text-gray-400 uppercase tracking-widest font-bold">Total Payable</span>
-        <div className="flex items-center gap-3">
-          {originalPrice && (
-            <span className="text-gray-400 line-through text-lg sm:text-xl">₦{originalPrice.toLocaleString()}</span>
-          )}
-          <span className="text-2xl sm:text-3xl text-primary font-black">₦{selectedOption.price.toLocaleString()}</span>
-        </div>
+        <span className="text-2xl sm:text-3xl text-primary font-black">₦{selectedOption.price.toLocaleString()}</span>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
