@@ -6,6 +6,8 @@ import { FeaturedOffers } from "@/components/home/FeaturedOffers";
 import { TrustSection } from "@/components/home/TrustSection";
 import { BottomCtaBanner } from "@/components/home/BottomCtaBanner";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>

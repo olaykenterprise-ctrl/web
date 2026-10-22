@@ -2,6 +2,8 @@ import { getProductBySlug, getNewArrivals } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { ProductClient } from "./ProductClient";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const pageParams = await params;
   const product = await getProductBySlug(pageParams.slug);

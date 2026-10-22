@@ -3,6 +3,8 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const products = await getProductsByCategory(resolvedParams.slug);

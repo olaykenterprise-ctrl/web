@@ -5,6 +5,8 @@ import Link from "next/link";
 import { CheckCircle2, Play, ShoppingCart } from "lucide-react";
 import { BlockRenderer } from "@/components/ui/BlockRenderer";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const page = await getLandingPageBySlug(resolvedParams.slug);
