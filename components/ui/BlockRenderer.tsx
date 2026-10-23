@@ -265,6 +265,7 @@ const NIGERIA_STATES = [
 function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   
   const options = block.data.options || [{ label: "1 piece", quantity: 1, price: block.data.price || 25000 }];
   const originalPrice = block.data.originalPrice || null;
@@ -277,6 +278,7 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setSubmitError("");
     
     const formData = new FormData(e.currentTarget);
     
@@ -293,18 +295,22 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
           items: [{ name: productName, quantity: selectedOption.quantity, price: selectedOption.price }]
         }),
       });
-      if (response.ok) {
-        setSuccess(true);
-        if (typeof window !== 'undefined' && (window as any).fbq) {
-          (window as any).fbq('track', 'Lead', {
-            content_name: productName,
-            value: selectedOption.price,
-            currency: 'NGN'
-          });
-        }
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || "We couldn't save your order. Please try again.");
+      }
+
+      setSuccess(true);
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead', {
+          content_name: productName,
+          value: selectedOption.price,
+          currency: 'NGN'
+        });
       }
     } catch (err) {
       console.error(err);
+      setSubmitError(err instanceof Error ? err.message : "We couldn't save your order. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -398,6 +404,12 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
             <input required name="city" type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all bg-white text-sm shadow-2xs" placeholder="e.g. Ikeja" />
           </div>
         </div>
+
+        {submitError && (
+          <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {submitError}
+          </p>
+        )}
 
         {selectedState === 'Lagos' ? (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2 mt-4">

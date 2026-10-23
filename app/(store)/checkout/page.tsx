@@ -15,6 +15,7 @@ export default function CheckoutPage() {
   
   const [mounted, setMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -43,6 +44,7 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError("");
     
     try {
       const formData = new FormData(e.currentTarget);
@@ -54,7 +56,7 @@ export default function CheckoutPage() {
       const city = formData.get("city") as string || "";
       const state = formData.get("state") as string || "";
 
-      await fetch("/api/orders", {
+      const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -67,6 +69,11 @@ export default function CheckoutPage() {
         })
       });
 
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || "We couldn't save your order. Please try again.");
+      }
+
       // Fire Purchase event
       fbEvent("Purchase", {
         value: total,
@@ -76,12 +83,14 @@ export default function CheckoutPage() {
         num_items: cart.length
       });
 
+      clearCart();
+      router.push('/checkout/success');
     } catch (err) {
       console.error("Order submission error:", err);
+      setSubmitError(err instanceof Error ? err.message : "We couldn't save your order. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    clearCart();
-    router.push('/checkout/success');
   };
 
   return (
@@ -97,6 +106,11 @@ export default function CheckoutPage() {
         
         {/* Checkout Form */}
         <div className="lg:col-span-2">
+          {submitError && (
+            <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {submitError}
+            </p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-8">
             
             {/* Contact Info */}
