@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, ArrowUp, ArrowDown, Type, Heading1, Heading2, Image as ImageIcon, Images, List, Play, MousePointerClick, Sparkles, ExternalLink } from "lucide-react";
+import { Plus, Trash2, ArrowUp, ArrowDown, Type, Heading1, Heading2, Image as ImageIcon, Images, List, Play, MousePointerClick, Sparkles } from "lucide-react";
 import { BlockType, PageBlock } from "@/lib/db";
 
 export function BlockBuilder({ 
@@ -125,7 +125,6 @@ export function BlockBuilder({
       case 'list': return { items: ['Feature Name: Short benefit description...', 'Second Feature: Another key benefit...'] };
       case 'video': return { url: '' };
       case 'button': return { label: 'Shop Now', link: '#checkout-form' };
-      case 'resource': return { kind: 'course', title: '', description: '', url: '', actionLabel: 'Watch this course' };
       case 'form': return { productName: 'Product Name', originalPrice: 35000, price: 25000 };
       default: return {};
     }
@@ -214,7 +213,6 @@ function AddMenu({ onAdd }: { onAdd: (type: BlockType) => void }) {
     { type: 'image', label: 'Image(s)', icon: <Images size={16} /> },
     { type: 'list', label: 'Bullet List', icon: <List size={16} /> },
     { type: 'video', label: 'YouTube Video', icon: <Play size={16} /> },
-    { type: 'resource', label: 'Course / Download Link', icon: <ExternalLink size={16} /> },
     { type: 'button', label: 'Action Button', icon: <MousePointerClick size={16} /> },
     { type: 'form', label: 'Checkout Form', icon: <List size={16} /> },
   ];
@@ -259,7 +257,6 @@ function BlockIcon({ type }: { type: BlockType }) {
     case 'image': return <Images size={16} className="text-emerald-500" />;
     case 'list': return <List size={16} className="text-pink-500" />;
     case 'video': return <Play size={16} className="text-red-500" />;
-    case 'resource': return <ExternalLink size={16} className="text-emerald-600" />;
     case 'button': return <MousePointerClick size={16} className="text-blue-600" />;
     case 'form': return <List size={16} className="text-orange-500" />;
     default: return null;
@@ -432,49 +429,6 @@ function BlockEditor({ block, onChange }: { block: PageBlock, onChange: (data: a
           onChange={(e) => onChange({ link: e.target.value })}
           className="w-full bg-[#F4F7FB] px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-sm"
           placeholder="Link URL (e.g. /product/my-product)"
-        />
-      </div>
-    );
-  }
-
-  if (block.type === 'resource') {
-    return (
-      <div className="space-y-3">
-        <select
-          value={block.data.kind || 'course'}
-          onChange={(e) => onChange({ ...block.data, kind: e.target.value })}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 text-sm"
-        >
-          <option value="course">Course video</option>
-          <option value="download">PDF / download resource</option>
-        </select>
-        <input
-          type="text"
-          value={block.data.title || ''}
-          onChange={(e) => onChange({ ...block.data, title: e.target.value })}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 text-sm"
-          placeholder="Resource title"
-        />
-        <textarea
-          value={block.data.description || ''}
-          onChange={(e) => onChange({ ...block.data, description: e.target.value })}
-          rows={2}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 text-sm resize-none"
-          placeholder="Short description"
-        />
-        <input
-          type="url"
-          value={block.data.url || ''}
-          onChange={(e) => onChange({ ...block.data, url: e.target.value })}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 text-sm"
-          placeholder="https://..."
-        />
-        <input
-          type="text"
-          value={block.data.actionLabel || ''}
-          onChange={(e) => onChange({ ...block.data, actionLabel: e.target.value })}
-          className="w-full bg-[#F4F7FB] px-4 py-3 rounded-xl border border-gray-200 text-sm"
-          placeholder="Button label"
         />
       </div>
     );

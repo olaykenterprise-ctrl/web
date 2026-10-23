@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 
-export type BlockType = 'headline' | 'subheadline' | 'body' | 'image' | 'carousel' | 'list' | 'video' | 'button' | 'resource' | 'form';
+export type BlockType = 'headline' | 'subheadline' | 'body' | 'image' | 'carousel' | 'list' | 'video' | 'button' | 'form';
 
 export interface PageBlock {
   id: string;
