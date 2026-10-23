@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { PageBlock } from "@/lib/db";
-import { CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Truck, RotateCcw, Sparkles } from "lucide-react";
+import { CheckCircle2, ShoppingCart, ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Truck, RotateCcw, Sparkles, Download, ExternalLink, Play } from "lucide-react";
 import { useState, useRef } from "react";
 
 export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | null }) {
@@ -66,6 +66,38 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
                 <span>{block.data.label || "BUY NOW"}</span>
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </a>
+            </section>
+          );
+        }
+
+        if (block.type === 'resource') {
+          const isDownload = block.data.kind === 'download';
+          const ActionIcon = isDownload ? Download : Play;
+          return (
+            <section key={block.id} className="container-custom py-3 sm:py-4">
+              <div className={`max-w-4xl mx-auto rounded-3xl border p-6 sm:p-8 md:p-9 flex flex-col sm:flex-row sm:items-center gap-6 shadow-xs ${isDownload ? 'bg-[#FAF8F5] border-amber-200/70' : 'bg-white border-gray-200/80'}`}>
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${isDownload ? 'bg-amber-100 text-amber-800' : 'bg-primary/10 text-primary'}`}>
+                  <ActionIcon size={22} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className={`text-[11px] font-bold uppercase tracking-[0.16em] mb-1 ${isDownload ? 'text-amber-800' : 'text-primary'}`}>
+                    {isDownload ? 'PDF Guide' : 'Practical Video Course'}
+                  </p>
+                  <h2 className="font-editorial text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+                    {block.data.title}
+                  </h2>
+                  <p className="text-sm text-gray-600 mt-2 leading-relaxed">{block.data.description}</p>
+                </div>
+                <a
+                  href={block.data.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold text-sm transition-colors shrink-0 ${isDownload ? 'bg-amber-700 text-white hover:bg-amber-800' : 'bg-primary text-white hover:bg-primary-dark'}`}
+                >
+                  <span>{block.data.actionLabel || (isDownload ? 'Open PDF guide' : 'Watch this course')}</span>
+                  {isDownload ? <ExternalLink size={16} /> : <ArrowRight size={16} />}
+                </a>
+              </div>
             </section>
           );
         }
