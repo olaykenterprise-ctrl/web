@@ -139,7 +139,7 @@ export function BlockRenderer({ blocks }: { blocks: PageBlock[] | undefined | nu
                   <span className="w-2 h-2 rounded-full bg-primary"></span>
                   <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Product Overview</span>
                 </div>
-                <p className="text-sm sm:text-base md:text-[16px] text-gray-700 leading-relaxed font-normal">
+                <p className="text-sm sm:text-base md:text-[16px] text-gray-700 leading-relaxed font-normal whitespace-pre-line">
                   {block.data.text}
                 </p>
               </div>
@@ -331,8 +331,8 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
   return (
     <div id="checkout-form" className="p-6 sm:p-10 md:p-12">
       <div className="text-center mb-6 sm:mb-8">
-        <div className="inline-block bg-green-100 text-green-800 font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-1 shadow-2xs border border-green-200">
-          🚚 Free Delivery Nationwide
+        <div className={`inline-block font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-1 shadow-2xs border ${block.data.deliveryNote ? "bg-amber-100 text-amber-800 border-amber-200" : "bg-green-100 text-green-800 border-green-200"}`}>
+          {block.data.deliveryNote ? "📦" : "🚚"} {block.data.deliveryNote || "Free Delivery Nationwide"}
         </div>
         <div className="inline-block bg-amber-100 text-amber-800 font-bold px-3.5 py-1 rounded-full text-[11px] tracking-wider uppercase mb-3 shadow-2xs border border-amber-200">
           💵 Payment on Delivery (Lagos Only)
@@ -342,7 +342,9 @@ function CheckoutFormBlock({ block }: { block: PageBlock }) {
       </div>
       
       <div className="bg-white border border-gray-200/80 text-gray-900 font-bold text-center py-4 sm:py-5 rounded-2xl mb-6 flex flex-col justify-center items-center gap-1 shadow-xs">
-        <span className="text-xs text-gray-400 uppercase tracking-widest font-bold">Total Payable</span>
+        <span className="text-xs text-gray-400 uppercase tracking-widest font-bold">
+          {block.data.totalLabel || "Total Payable"}
+        </span>
         <div className="flex items-center gap-3">
           {originalPrice && selectedOption.quantity === 1 && originalPrice > selectedOption.price && (
             <span className="text-gray-400 line-through text-lg sm:text-xl">₦{originalPrice.toLocaleString()}</span>
